@@ -41,7 +41,7 @@ services:
     # Redis Cache
     $$cap_appname-cache:
         image: 'redis:$$cap_REDIS_VERSION'
-        command: redis-server --appendonly yes --replica-read-only no"
+        command: redis-server --appendonly yes --replica-read-only no
         healthcheck:
             test: ['CMD', 'redis-cli', 'ping']
             retries: 3
