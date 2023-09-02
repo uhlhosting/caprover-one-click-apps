@@ -26,6 +26,7 @@ services:
         restart: unless-stopped
         healthcheck:
             test: ['CMD', 'mysqladmin', 'ping', '-p $$cap_MYSQL_PASSWORD']
+            # test: ["CMD", "mysql", "--user=user", "--password=password", "--execute='SELECT 1'", "--host=127.0.0.1", "--port=3306"]
             retries: 3
             timeout: 5s
         caproverExtra:
