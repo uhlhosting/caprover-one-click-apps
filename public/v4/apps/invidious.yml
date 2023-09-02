@@ -29,6 +29,9 @@ services:
                   port: 5432
                   dbname: invidious
                 hmac_key: "VrbmrX6mXGcI4AKnl/EfBWXIdIE="
+                https_only: true
+                domain: yt.uhl.cloud
+                external_port: 443
         caproverExtra:
             containerHttpPort: '3000'
 
