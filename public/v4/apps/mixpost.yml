@@ -1,5 +1,6 @@
 captainVersion: 4
 services:
+    # Mixpost
     $$cap_appname:
         image: inovector/mixpost-pro-team:$$cap_MIXPOST_VERSION
         restart: unless-stopped
@@ -21,6 +22,7 @@ services:
         volumes:
             - $$cap_appname-storage:/var/www/html/storage/app
             - $$cap_appname-logs:/var/www/html/storage/logs
+    # Mysql Database
     $$cap_appname-db:
         restart: unless-stopped
         healthcheck:
@@ -37,6 +39,7 @@ services:
             MYSQL_PASSWORD: $$cap_MYSQL_PASSWORD
         volumes:
             - $$cap_appname-db:/var/lib/mysql
+    # Redis Cache
     $$cap_appname-cache:
         image: 'redis:$$cap_REDIS_VERSION'
         command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
