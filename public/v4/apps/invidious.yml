@@ -31,7 +31,7 @@ services:
                 full_refresh: false
                 hmac_key: "VrbmrX6mXGcI4AKnl/EfBWXIdIE="
                 https_only: false
-                domain: https://$$cap_appname.$$cap_root_domain
+                domain:
         caproverExtra:
             containerHttpPort: '3000'
 
