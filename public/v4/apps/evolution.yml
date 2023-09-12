@@ -1,7 +1,7 @@
 captainVersion: 4
 services:
     $$cap_appname:
-        image: evolution/api:$$cap_evolution_version
+        image: davidsongomes/evolution-api:$$cap_evolution_version
         volumes:
             - $$cap_appname-instances:/evolution/instances
             - $$cap_appname-store:/evolution/store
