@@ -1,6 +1,0 @@
-{
-    "yaml.schemas": {
-        "./caprover-schema.json": "*.yml"
-    },
-    "files.autoSave": "onFocusChange"
-}
