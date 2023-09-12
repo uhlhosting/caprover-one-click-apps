@@ -137,14 +137,14 @@ caproverOneClickApp:
     variables:
         - id: $$cap_evolution_version
           label: Evolution API Version
-          description: Check out their Docker page for the valid tags https://hub.docker.com/r/evolution-api/api/tags
+          description: Check out their Docker page for the valid tags https://hub.docker.com/r/davidsongomes/evolution-api/tags
           validRegex: /^\d+\.\d+\.\d+$/
-          defaultValue: 'local'
+          defaultValue: 'latest'
         - id: $$cap_SERVER_URL
           label: Server URL
           description: The URL of your Evolution API server.
           validRegex: /.+/
-          defaultValue: 'http://localhost:3000'
+          defaultValue: 'http://$$cap_appname.$$cap_root_domain'
         - id: $$cap_CORS_ORIGIN
           label: CORS Origin
           description: The origin of your Evolution API server.
@@ -231,7 +231,7 @@ caproverOneClickApp:
           defaultValue: 'true'
         - id: $$cap_DATABASE_ENABLED
           label: Enable MongoDB
-          description: If you have a MongoDB instance running, you can enable it https://hub.docker.com/_/redis/tags
+          description: If you have a MongoDB instance running, you can enable it
           validRegex: /.{1,}/
           defaultValue: 'false'
         - id: $$cap_DATABASE_CONNECTION_URI
