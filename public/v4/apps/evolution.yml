@@ -153,7 +153,7 @@ caproverOneClickApp:
           label: Log Level
           description: The log level of your Evolution API server.
           validRegex: /.+/
-          defaultValue: 'ERROR,WARN,DEBUG,INFO'
+          defaultValue: 'INFO'
         - id: $$cap_DEL_INSTANCE
           label: Delete Instance After Disconnection
           description: Delete the instance after disconnection.
@@ -210,15 +210,6 @@ caproverOneClickApp:
           description: This is the API key that will be used to access your application.
           validRegex: /.{1,255}$/
           defaultValue: 'GLOBAL-API-KEY'
-        - id: $$cap_evolution_version
-          label: Evolution API Version
-          description: This is the version of the evolution API that will be used to access your application.
-          validRegex: /^\d+\.\d+$/
-          defaultValue: 'local'
-        - id: $$cap_SERVER_URL
-          label: Server URL
-          description: This is the URL that will be used to access your application.
-          defaultValue: 'API-DOMAIN'
         - id: $$cap_REDIS_ENABLED
           label: Enable Redis
           description: Enable Redis to cache data.
