@@ -3,8 +3,8 @@ services:
     $$cap_appname:
         image: evolution/api:$$cap_evolution_version
         volumes:
-            - evolution_instances:/evolution/instances
-            - evolution_store:/evolution/store
+            - $$cap_appname-instances:/evolution/instances
+            - $$cap_appname-store:/evolution/store
         command: ['node', './dist/src/main.js']
         caproverExtra:
             containerHttpPort: '8080'
