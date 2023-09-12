@@ -244,7 +244,11 @@ caproverOneClickApp:
         - id: $$cap_MONGO_VERSION
           label: MongoDB Version
           defaultValue: latest
-          description: Checkout their docker page for the valid tags https://hub.docker.com/r/library/mongo/tags/
+          description: Checkout their docker page for the valid tags https://hub.docker.com/_/mongo/tags
+        - id: $$cap_MONGO_EXPRESS_VERSION
+          label: Mongo-Express Version
+          defaultValue: latest
+          description: Checkout their docker page for the valid tags https://hub.docker.com/_/mongo-express/tags
         - id: $$cap_DATABASE_SAVE_DATA_INSTANCE
           label: Save Data Instance in Database
           defaultValue: 'false'
