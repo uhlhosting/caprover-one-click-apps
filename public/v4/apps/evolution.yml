@@ -432,6 +432,10 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
           defaultValue: 'true'
         - id: $$cap_WEBHOOK_EVENTS_NEW_JWT_TOKEN
+          label: TBD
+          description: TBD
+          validRegex:
+          defaultValue:
 
         # Config Session
         - id: $$cap_CONFIG_SESSION_PHONE_CLIENT
