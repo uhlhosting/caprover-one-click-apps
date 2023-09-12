@@ -138,13 +138,12 @@ caproverOneClickApp:
         - id: $$cap_evolution_version
           label: Evolution API Version
           description: Check out their Docker page for the valid tags https://hub.docker.com/r/davidsongomes/evolution-api/tags
-          validRegex: /^\d+\.\d+\.\d+$/
           defaultValue: 'latest'
         - id: $$cap_SERVER_URL
           label: Server URL
           description: The URL of your Evolution API server.
           validRegex: /.+/
-          defaultValue: 'http://$$cap_appname.$$cap_root_domain'
+          defaultValue: http://$$cap_appname.$$cap_root_domain
         - id: $$cap_CORS_ORIGIN
           label: CORS Origin
           description: The origin of your Evolution API server.
