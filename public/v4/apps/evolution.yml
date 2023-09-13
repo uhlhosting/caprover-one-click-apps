@@ -519,29 +519,4 @@ caproverOneClickApp:
           defaultValue: 'evolution'
 
         # Authentication Instance Webhook URL
-        - id: $$cap_AUTHENTICATION_INSTANCE_WEBHOOK_URL
-          label: Authentication Instance Webhook URL
-          description: The webhook URL for the authentication instance.
-          validRegex: /^https?:\/\/[^\s]+/
-          defaultValue: 'https://evolution.uhl.cloud'
-
-        # Authentication Instance Chatwoot Account ID
-        - id: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_ACCOUNT_ID
-          label: Chatwoot Account ID
-          description: The Chatwoot account ID for the authentication instance.
-          validRegex: /^\d+$/
-          defaultValue: '1'
-
-        # Authentication Instance Chatwoot Token
-        - id: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_TOKEN
-          label: Chatwoot Token
-          description: The Chatwoot token for the authentication instance.
-          validRegex: /.{1,255}$/
-          defaultValue: '123456'
-
-        # Authentication Instance Chatwoot URL
-        - id: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_URL
-          label: Chatwoot URL
-          description: The URL for Chatwoot for the authentication instance.
-          validRegex: /^https?:\/\/[^\s]+/
-          defaultValue: 'https://chat-web.uhl.cloud/'
+        - id: $
