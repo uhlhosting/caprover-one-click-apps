@@ -11,12 +11,7 @@ services:
             - $$cap_appname-rabbitmq
             - $$cap_appname-mongodb
             - $$cap_appname-mongo-express
-        command:
-            [
-                'sh',
-                '-c',
-                'npm install -g pm2 && pm2-runtime start npm -- run start:prod',
-            ]
+        command: ['node', './dist/src/main.js']
         caproverExtra:
             containerHttpPort: '8080'
         environment:
