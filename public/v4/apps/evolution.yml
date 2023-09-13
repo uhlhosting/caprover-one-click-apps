@@ -180,7 +180,7 @@ caproverOneClickApp:
           label: Log Level
           description: The log level of your Evolution API server.
           validRegex: /.+/
-          defaultValue: 'INFO'
+          defaultValue: 'ERROR,WARN,DEBUG,INFO,LOG,VERBOSE,DARK,WEBHOOKS'
         - id: $$cap_LOG_COLOR
           label: Log Color
           description: The log color of your Evolution API server.
@@ -205,7 +205,7 @@ caproverOneClickApp:
           description: Store messages in the store.
           validRegex: /^true|false$/
           defaultValue: 'true'
-        - id: $$cap_STORE_MESSAGES_UP
+        - id: $$cap_STORE_MESSAGE_UP
           label: Store Messages Up
           description: Store messages in the store up to the limit.
           validRegex: /^true|false$/
@@ -231,7 +231,7 @@ caproverOneClickApp:
           description: Clean messages in the store.
           validRegex: /^true|false$/
           defaultValue: 'true'
-        - id: $$cap_CLEAN_STORE_MESSAGES_UP
+        - id: $$cap_CLEAN_STORE_MESSAGE_UP
           label: Clean Store Messages Up
           description: Clean messages in the store up to the limit.
           validRegex: /^true|false$/
@@ -278,6 +278,9 @@ caproverOneClickApp:
           defaultValue: 'false'
         - id: $$cap_DATABASE_SAVE_DATA_NEW_MESSAGE
           label: Save Data New Message in Database
+          defaultValue: 'false'
+        - id: $$cap_DATABASE_SAVE_MESSAGE_UPDATE
+          label: Save Data Message Update in Database
           defaultValue: 'false'
         - id: $$cap_DATABASE_SAVE_DATA_CONTACTS
           label: Save Data User Group Member in Database
@@ -329,7 +332,12 @@ caproverOneClickApp:
           label: Global Webhook URL
           description: Global Webhook URL.
           validRegex: /.+/
-          defaultValue: 'http://srv-captain--$$cap_appname'
+          defaultValue: http://srv-captain--$$cap_appname
+        - id: $$cap_WEBHOOK_GLOBAL_ENABLED
+          label: Enable Webhook Global
+          description: This is the type of authentication that will be used to access your application.
+          validRegex: /^(true|false)$/
+          defaultValue: 'false'
         - id: $$cap_WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS
           label: Enable Webhook Event for Global Webhook
           description: This is the type of authentication that will be used to access your application.
