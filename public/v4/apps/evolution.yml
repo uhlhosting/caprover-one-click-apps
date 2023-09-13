@@ -5,6 +5,11 @@ services:
         volumes:
             - $$cap_appname-instances:/evolution/instances
             - $$cap_appname-store:/evolution/store
+        depends_on:
+            - $$cap_appname-redis
+            - $$cap_appname-rabbitmq
+            - $$cap_appname-mongodb
+            - $$cap_appname-mongo-express
         command: ['node', './dist/src/main.js']
         caproverExtra:
             containerHttpPort: '8080'
@@ -73,11 +78,13 @@ services:
             AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: $$cap_AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
             AUTHENTICATION_JWT_EXPIRIN_IN: $$cap_AUTHENTICATION_JWT_EXPIRIN_IN
             AUTHENTICATION_JWT_SECRET: $$cap_AUTHENTICATION_JWT_SECRET
-            depends_on:
-                - $$cap_appname-redis
-                - $$cap_appname-rabbitmq
-                - $$cap_appname-mongodb
-                - $$cap_appname-mongo-express
+            AUTHENTICATION_INSTANCE_MODE: $$cap_AUTHENTICATION_INSTANCE_MODE
+            AUTHENTICATION_INSTANCE_NAME: $$cap_AUTHENTICATION_INSTANCE_NAME
+            AUTHENTICATION_INSTANCE_WEBHOOK_URL: $$cap_AUTHENTICATION_INSTANCE_WEBHOOK_URL
+            AUTHENTICATION_INSTANCE_CHATWOOT_ACCOUNT_ID: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_ACCOUNT_ID
+            AUTHENTICATION_INSTANCE_CHATWOOT_TOKEN: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_TOKEN
+            AUTHENTICATION_INSTANCE_CHATWOOT_URL: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_URL
+
     # Redis Cache
     $$cap_appname-redis:
         image: redis:$$cap_REDIS_VERSION
@@ -328,8 +335,8 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
           defaultValue: 'true'
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_SET
-          label: TBD
-          description: TBD
+          label: WEBHOOK_EVENTS_MESSAGES_SET
+          description: WEBHOOK_EVENTS_MESSAGES_SET
           validRegex: /^(true|false)$/
           defaultValue: 'true'
 
@@ -434,8 +441,8 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
           defaultValue: 'true'
         - id: $$cap_WEBHOOK_EVENTS_NEW_JWT_TOKEN
-          label: TBD
-          description: TBD
+          label: WEBHOOK_EVENTS_NEW_JWT_TOKEN
+          description: WEBHOOK_EVENTS_NEW_JWT_TOKEN
           validRegex:
           defaultValue:
 
@@ -509,7 +516,7 @@ caproverOneClickApp:
           label: Authentication Instance Webhook URL
           description: The webhook URL for the authentication instance.
           validRegex: /^https?:\/\/[^\s]+/
-          defaultValue: '<url>'
+          defaultValue: 'https://evolution.uhl.cloud'
 
         # Authentication Instance Chatwoot Account ID
         - id: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_ACCOUNT_ID
