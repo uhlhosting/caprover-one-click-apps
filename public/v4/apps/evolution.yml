@@ -1,6 +1,7 @@
 captainVersion: 4
 services:
     $$cap_appname:
+        restart: always
         image: davidsongomes/evolution-api:$$cap_evolution_version
         volumes:
             - $$cap_appname-instances:/evolution/instances
@@ -10,7 +11,12 @@ services:
             - $$cap_appname-rabbitmq
             - $$cap_appname-mongodb
             - $$cap_appname-mongo-express
-        command: ['node', './dist/src/main.js']
+        command:
+            [
+                'sh',
+                '-c',
+                'npm install -g pm2 && pm2-runtime start npm -- run start:prod',
+            ]
         caproverExtra:
             containerHttpPort: '8080'
         environment:
@@ -87,6 +93,7 @@ services:
 
     # Redis Cache
     $$cap_appname-redis:
+        restart: unless-stopped
         image: redis:$$cap_REDIS_VERSION
         command: redis-server --appendonly yes
         healthcheck:
@@ -99,6 +106,7 @@ services:
             - $$cap_appname-redis:/data
     # RabbitMQ
     $$cap_appname-rabbitmq:
+        restart: unless-stopped
         image: rabbitmq:$$cap_RABBITMQ_VERSION
         healthcheck:
             test: ['CMD', 'rabbitmqctl', 'status']
@@ -108,6 +116,7 @@ services:
             notExposeAsWebApp: true
     # MongoDB
     $$cap_appname-mongodb:
+        restart: unless-stopped
         image: mongo:$$cap_MONGO_VERSION
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
@@ -122,6 +131,7 @@ services:
             - $$cap_appname-mongodb-configdb:/data/configdb
     # Mongo-Express
     $$cap_appname-mongo-express:
+        restart: unless-stopped
         image: mongo-express:$$cap_MONGO_EXPRESS_VERSION
         environment:
             ME_CONFIG_BASICAUTH_USERNAME: root
@@ -129,8 +139,10 @@ services:
             ME_CONFIG_MONGODB_SERVER: srv-captain--$$cap_appname-mongodb
             ME_CONFIG_MONGODB_ADMINUSERNAME: root
             ME_CONFIG_MONGODB_ADMINPASSWORD: root
+            ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+            ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
         caproverExtra:
-            containerHttpPort: 8081
+            containerHttpPort: 443
 caproverOneClickApp:
     displayName: Evolution API
     isOfficial: true
@@ -244,7 +256,7 @@ caproverOneClickApp:
           label: MongoDB Connection URI
           description: The MongoDB connection URI.
           validRegex: /.+/
-          defaultValue: 'mongodb://srv-captain--$$cap_appname-mongo/?authSource=admin&readPreference=primary&ssl=false&directConnection=true'
+          defaultValue: 'mongodb://root:root@srv-captain--evolution-mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true'
         - id: $$cap_DATABASE_CONNECTION_DB_PREFIX_NAME
           label: MongoDB Connection DB Prefix Name
           defaultValue: 'evolution'
@@ -283,7 +295,7 @@ caproverOneClickApp:
           label: Redis URI
           description: Redis URI.
           validRegex: /.+/
-          defaultValue: 'redis://$$cap_appname-redis:6379'
+          defaultValue: redis://srv-captain--$$cap_appname-cache:6379
         - id: $$cap_REDIS_PREFIX_KEY
           label: Redis Prefix Key
           description: Redis prefix key.
@@ -303,7 +315,7 @@ caproverOneClickApp:
           label: RabbitMQ URI
           description: RabbitMQ URI.
           validRegex: /.+/
-          defaultValue: 'amqp://guest:guest@$$cap_appname-rabbitmq:5672'
+          defaultValue: 'amqp://guest:guest@srv-captain--$$cap_appname-rabbitmq:5672'
         - id: $$cap_RABBITMQ_VERSION
           label: RabbitMQ Version
           description: RabbitMQ version. Check out their valid tags at https://hub.docker.com/_/redis/tags
@@ -318,7 +330,7 @@ caproverOneClickApp:
           label: Global Webhook URL
           description: Global Webhook URL.
           validRegex: /.+/
-          defaultValue: 'http://localhost:3000/api/webhook'
+          defaultValue: 'http://srv-captain--$$cap_appname'
         - id: $$cap_WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS
           label: Enable Webhook Event for Global Webhook
           description: This is the type of authentication that will be used to access your application.
