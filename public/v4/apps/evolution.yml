@@ -1,7 +1,7 @@
 captainVersion: 4
 services:
     $$cap_appname:
-        restart: always
+        restart: on-failure
         image: davidsongomes/evolution-api:$$cap_evolution_version
         volumes:
             - $$cap_appname-instances:/evolution/instances
@@ -13,7 +13,7 @@ services:
             - $$cap_appname-mongo-express
         command: ['node', './dist/src/main.js']
         caproverExtra:
-            containerHttpPort: '8080'
+            containerHttpPort: '443'
         environment:
             SERVER_URL: $$cap_SERVER_URL
             CORS_ORIGIN: $$cap_CORS_ORIGIN
@@ -73,7 +73,7 @@ services:
             CONFIG_SESSION_PHONE_CLIENT: $$cap_CONFIG_SESSION_PHONE_CLIENT
             CONFIG_SESSION_PHONE_NAME: $$cap_CONFIG_SESSION_PHONE_NAME
             QRCODE_LIMIT: $$cap_QRCODE_LIMIT
-            QRCODE_COLOR: $$cap_QRCODE_COLOR
+            #QRCODE_COLOR: $$cap_QRCODE_COLOR
             AUTHENTICATION_TYPE: $$cap_AUTHENTICATION_TYPE
             AUTHENTICATION_API_KEY: $$cap_AUTHENTICATION_API_KEY
             AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: $$cap_AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
@@ -88,7 +88,7 @@ services:
 
     # Redis Cache
     $$cap_appname-redis:
-        restart: unless-stopped
+        restart: on-failure
         image: redis:$$cap_REDIS_VERSION
         command: redis-server --appendonly yes
         healthcheck:
@@ -101,7 +101,7 @@ services:
             - $$cap_appname-redis:/data
     # RabbitMQ
     $$cap_appname-rabbitmq:
-        restart: unless-stopped
+        restart: on-failure
         image: rabbitmq:$$cap_RABBITMQ_VERSION
         healthcheck:
             test: ['CMD', 'rabbitmqctl', 'status']
@@ -111,7 +111,7 @@ services:
             notExposeAsWebApp: true
     # MongoDB
     $$cap_appname-mongodb:
-        restart: unless-stopped
+        restart: on-failure
         image: mongo:$$cap_MONGO_VERSION
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
@@ -126,7 +126,7 @@ services:
             - $$cap_appname-mongodb-configdb:/data/configdb
     # Mongo-Express
     $$cap_appname-mongo-express:
-        restart: unless-stopped
+        restart: on-failure
         image: mongo-express:$$cap_MONGO_EXPRESS_VERSION
         environment:
             ME_CONFIG_BASICAUTH_USERNAME: root
@@ -138,6 +138,10 @@ services:
             ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
         caproverExtra:
             containerHttpPort: 443
+        depends_on:
+            - $$cap_appname-mongodb
+        links:
+            - $$cap_appname-mongodb
 caproverOneClickApp:
     displayName: Evolution API
     isOfficial: true
@@ -471,11 +475,11 @@ caproverOneClickApp:
           description: Set the display limit for QR codes.
           validRegex: /^\d+$/
           defaultValue: '30'
-        - id: $$cap_QRCODE_COLOR
-          label: QR Code Color
-          description: Set the color for QR codes.
-          validRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
-          defaultValue: '#198754'
+        # - id: $$cap_QRCODE_COLOR
+        #   label: QR Code Color
+        #   description: Set the color for QR codes.
+        #   validRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+        #   defaultValue: '#198754'
 
         # Authentication
         - id: $$cap_AUTHENTICATION_TYPE
