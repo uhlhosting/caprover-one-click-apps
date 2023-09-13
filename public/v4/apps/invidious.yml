@@ -10,9 +10,9 @@ services:
             POSTGRES_PASSWORD: kemal
             POSTGRES_USER: kemal
         healthcheck:
-            test: ["CMD", "pg_isready", "-U", "postgres"]
+            test: ['CMD', 'pg_isready', '-U', 'postgres']
         caproverExtra:
-            notExposeAsWebApp: "true"
+            notExposeAsWebApp: 'true'
     $$cap_appname:
         image: quay.io/invidious/invidious$$cap_version
         restart: always
@@ -37,18 +37,18 @@ services:
                 default_user_preferences:
                 quality: dash
         caproverExtra:
-            containerHttpPort: "3000"
+            containerHttpPort: '3000'
 
 caproverOneClickApp:
     variables:
-        - id: "$$cap_version"
+        - id: '$$cap_version'
           label: Invidious Version
-          defaultValue: "@sha256:ea657e8627b704aa110379b79f89c179cbc76e2c2b734552367c1ad51265e703"
+          defaultValue: '@sha256:ea657e8627b704aa110379b79f89c179cbc76e2c2b734552367c1ad51265e703'
           description: Check out their Quay.io page for the valid tags https://quay.io/repository/invidious/invidious?tab=tags. If you want to use the latest tag (or a versioned release, if available), start with a colon (e.g. :latest).
           validRegex: "/^([^\\s^\\/])+$/"
-        - id: "$$db_version"
+        - id: '$$db_version'
           label: Postgres Version
-          defaultValue: "14" # there is no other tag provided
+          defaultValue: '14' # there is no other tag provided
           description: Check out their Docker page for the valid tags https://hub.docker.com/_/postgres?tab=tags
           validRegex: "/^([^\\s^\\/])+$/"
     instructions:
