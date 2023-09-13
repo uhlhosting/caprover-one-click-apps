@@ -151,7 +151,7 @@ caproverOneClickApp:
         start: |-
             Initial setup instructions for Evolution API.
         end: |-
-            Evolution API is now set up. Your service is available at http://$$cap_appname.$$cap_root_domain .
+            Evolution API is now set up. Your service is available at https://$$cap_appname.$$cap_root_domain .
     variables:
         - id: $$cap_evolution_version
           label: Evolution API Version
@@ -161,7 +161,7 @@ caproverOneClickApp:
           label: Server URL
           description: The URL of your Evolution API server.
           validRegex: /.+/
-          defaultValue: http://$$cap_appname.$$cap_root_domain
+          defaultValue: $$cap_appname.$$cap_root_domain
         - id: $$cap_CORS_ORIGIN
           label: CORS Origin
           description: The origin of your Evolution API server.
@@ -333,7 +333,7 @@ caproverOneClickApp:
           label: Global Webhook URL
           description: Global Webhook URL.
           validRegex: /.+/
-          defaultValue: http://$$cap_appname.$$cap_root_domain
+          defaultValue: $$cap_appname.$$cap_root_domain
         - id: $$cap_WEBHOOK_GLOBAL_ENABLED
           label: Enable Webhook Global
           description: This is the type of authentication that will be used to access your application.
@@ -461,46 +461,44 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_NEW_JWT_TOKEN
-          label: WEBHOOK_EVENTS_NEW_JWT_TOKEN
-          description: WEBHOOK_EVENTS_NEW_JWT_TOKEN
-          validRegex:
-          defaultValue:
-
-        # Config Session
+          label: Webhook Event for New JWT Token
+          description: Enable or disable the webhook event for new JWT token.
+          validRegex: /^(true|false)$/
+          defaultValue: false
         - id: $$cap_CONFIG_SESSION_PHONE_CLIENT
           label: Phone Client Session Config
           description: The name that will be displayed on the smartphone connection.
           validRegex: /^.{1,100}$/
-          defaultValue: 'EvolutionAPI'
+          defaultValue: EvolutionAPI
         - id: $$cap_CONFIG_SESSION_PHONE_NAME
           label: Phone Name Session Config
           description: Browser Name for the phone session.
           validRegex: /^.{1,100}$/
-          defaultValue: 'chrome'
+          defaultValue: chrome
 
         # QR Code Config
         - id: $$cap_QRCODE_LIMIT
           label: QR Code Limit
           description: Set the display limit for QR codes.
           validRegex: /^\d+$/
-          defaultValue: '30'
-        # - id: $$cap_QRCODE_COLOR
-        #   label: QR Code Color
-        #   description: Set the color for QR codes.
-        #   validRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
-        #   defaultValue: '#198754'
+          defaultValue: 30
+        - id: $$cap_QRCODE_COLOR
+          label: QR Code Color
+          description: Set the color for QR codes.
+          validRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+          defaultValue: #198754
 
         # Authentication
         - id: $$cap_AUTHENTICATION_TYPE
           label: Authentication Type
           description: The type of authentication that will be used to access your application.
           validRegex: /^(apikey|jwt)$/
-          defaultValue: 'apikey'
+          defaultValue: apikey
         - id: $$cap_AUTHENTICATION_API_KEY
           label: Authentication API Key
           description: The API key used for authentication.
           validRegex: /^.{1,255}$/
-          defaultValue: 'B6D711FCDE4D4FD5936544120E713976'
+          defaultValue: Qf2FmXqhK886i11MdMlzl36rZTHPO4Nu
         - id: $$cap_AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
           label: Expose in Fetch Instances
           description: Expose this instance in the fetch instances API call.
@@ -515,14 +513,14 @@ caproverOneClickApp:
           label: JWT Secret Key
           description: The secret key for JWT authentication.
           validRegex: /^.{1,255}$/
-          defaultValue: 'L=0YWt]b2w[WF>#>:&E`'
+          defaultValue: d2f14d9ed5a6a6ba4559bd9a4ab9c89d585661cc8d177e8ac65643ff6c636194
 
         # Authentication Instance Mode
         - id: $$cap_AUTHENTICATION_INSTANCE_MODE
           label: Authentication Instance Mode
           description: Set the mode of the authentication instance. Typically 'server' or 'client'.
           validRegex: /^(server|client)$/
-          defaultValue: 'server'
+          defaultValue: server
 
         # Authentication Instance Name
         - id: $$cap_AUTHENTICATION_INSTANCE_NAME
@@ -536,7 +534,7 @@ caproverOneClickApp:
           label: Authentication Instance Webhook URL
           description: The webhook URL for the authentication instance.
           validRegex: /^https?:\/\/[^\s]+/
-          defaultValue: 'https://evolution.uhl.cloud'
+          defaultValue: https://evolution.uhl.cloud
 
         # Authentication Instance Chatwoot Account ID
         - id: $$cap_AUTHENTICATION_INSTANCE_CHATWOOT_ACCOUNT_ID
@@ -557,4 +555,4 @@ caproverOneClickApp:
           label: Chatwoot URL
           description: The URL for Chatwoot for the authentication instance.
           validRegex: /^https?:\/\/[^\s]+/
-          defaultValue: 'https://chat-web.uhl.cloud/'
+          defaultValue: https://chat-web.uhl.cloud
