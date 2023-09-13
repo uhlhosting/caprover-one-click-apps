@@ -19,9 +19,9 @@ services:
         environment:
             # Adapted from ./config/config.yml
             INVIDIOUS_CONFIG: |
-                channel_threads: 8
+                channel_threads: 1
                 check_tables: true
-                feed_threads: 8
+                feed_threads: 1
                 db:
                   user: kemal
                   password: kemal
@@ -29,9 +29,9 @@ services:
                   port: 5432
                   dbname: invidious
                 hmac_key: "VrbmrX6mXGcI4AKnl/EfBWXIdIE="
-                https_only: true
-                domain: yt.uhl.cloud
-                external_port: 443
+                full_refresh: false
+                https_only: false
+                domain:
         caproverExtra:
             containerHttpPort: '3000'
 
