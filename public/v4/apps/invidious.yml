@@ -10,41 +10,45 @@ services:
             POSTGRES_PASSWORD: kemal
             POSTGRES_USER: kemal
         healthcheck:
-            test: ['CMD', 'pg_isready', '-U', 'postgres']
+            test: ["CMD", "pg_isready", "-U", "postgres"]
         caproverExtra:
-            notExposeAsWebApp: 'true'
+            notExposeAsWebApp: "true"
     $$cap_appname:
         image: quay.io/invidious/invidious$$cap_version
         restart: always
         environment:
             # Adapted from ./config/config.yml
             INVIDIOUS_CONFIG: |
-                channel_threads: 1
+                channel_threads: 4
                 check_tables: true
-                feed_threads: 1
+                feed_threads: 4
                 db:
-                  user: kemal
-                  password: kemal
-                  host: srv-captain--$$cap_appname-db
-                  port: 5432
-                  dbname: invidious
+                    user: kemal
+                    password: kemal
+                    host: srv-captain--ins-db
+                    port: 5432
+                    dbname: invidious
                 hmac_key: "VrbmrX6mXGcI4AKnl/EfBWXIdIE="
                 full_refresh: false
                 https_only: false
-                domain:
+                domain: ins.uhl.cloud
+                external_port: 443
+                banner: ⚠️ Note - This public Invidious instance is sponsored ❤️ by <A HREF='https://geek-cookbook.funkypenguin.co.nz'>Funky Penguin's Geek Cookbook</A>. It's intended to support the published <A HREF='https://geek-cookbook.funkypenguin.co.nz/recipes/invidious/'>Docker Swarm recipes</A>, but may be removed at any time without notice. # (5)!
+                default_user_preferences:
+                quality: dash
         caproverExtra:
-            containerHttpPort: '3000'
+            containerHttpPort: "3000"
 
 caproverOneClickApp:
     variables:
-        - id: '$$cap_version'
+        - id: "$$cap_version"
           label: Invidious Version
-          defaultValue: '@sha256:ea657e8627b704aa110379b79f89c179cbc76e2c2b734552367c1ad51265e703'
+          defaultValue: "@sha256:ea657e8627b704aa110379b79f89c179cbc76e2c2b734552367c1ad51265e703"
           description: Check out their Quay.io page for the valid tags https://quay.io/repository/invidious/invidious?tab=tags. If you want to use the latest tag (or a versioned release, if available), start with a colon (e.g. :latest).
           validRegex: "/^([^\\s^\\/])+$/"
-        - id: '$$db_version'
+        - id: "$$db_version"
           label: Postgres Version
-          defaultValue: '14' # there is no other tag provided
+          defaultValue: "14" # there is no other tag provided
           description: Check out their Docker page for the valid tags https://hub.docker.com/_/postgres?tab=tags
           validRegex: "/^([^\\s^\\/])+$/"
     instructions:
