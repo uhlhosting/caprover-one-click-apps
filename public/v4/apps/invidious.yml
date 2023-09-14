@@ -30,7 +30,7 @@ services:
                     dbname: invidious
                 hmac_key: "VrbmrX6mXGcI4AKnl/EfBWXIdIE="
                 full_refresh: false
-                https_only: false
+                https_only: true
                 domain: ins.uhl.cloud
                 external_port: 443
                 banner: ⚠️ Note - This public Invidious instance is sponsored ❤️ by <A HREF='https://geek-cookbook.funkypenguin.co.nz'>Funky Penguin's Geek Cookbook</A>. It's intended to support the published <A HREF='https://geek-cookbook.funkypenguin.co.nz/recipes/invidious/'>Docker Swarm recipes</A>, but may be removed at any time without notice. # (5)!

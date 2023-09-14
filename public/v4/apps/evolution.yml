@@ -363,8 +363,8 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_SET
-          label: WEBHOOK_EVENTS_MESSAGES_SET
-          description: WEBHOOK_EVENTS_MESSAGES_SET
+          label: Enable Webhook Event for Messages Set
+          description: This is the type of authentication that will be used to access your application.
           validRegex: /^(true|false)$/
           defaultValue: true
 
@@ -494,7 +494,7 @@ caproverOneClickApp:
           label: QR Code Color
           description: Set the color for QR codes.
           validRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
-          defaultValue: #198754
+          defaultValue: '#198754'
 
         # Authentication
         - id: $$cap_AUTHENTICATION_TYPE
