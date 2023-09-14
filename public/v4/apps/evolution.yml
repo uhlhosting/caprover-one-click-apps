@@ -300,7 +300,7 @@ caproverOneClickApp:
         - id: $$cap_REDIS_ENABLED
           label: Enable Redis
           description: Enable Redis to cache data.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_REDIS_URI
           label: Redis URI
@@ -335,7 +335,7 @@ caproverOneClickApp:
         - id: $$cap_WEBSOCKET_ENABLED
           label: Enable Websocket
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_GLOBAL_URL
           label: Global Webhook URL
@@ -345,133 +345,133 @@ caproverOneClickApp:
         - id: $$cap_WEBHOOK_GLOBAL_ENABLED
           label: Enable Webhook Global
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS
           label: Enable Webhook Event for Global Webhook
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_APPLICATION_STARTUP
           label: Enable Webhook Event for Application Startup
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_QRCODE_UPDATED
           label: Enable Webhook Event for QRCode Updated
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_SET
           label: Enable Webhook Event for Messages Set
           description: This is the type of authentication that will be used to access your application.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_UPSERT
           label: Webhook Event for Message Upsert
           description: Enable or disable the webhook event for message upserts.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_UPDATE
           label: Webhook Event for Message Update
           description: Enable or disable the webhook event for message updates.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         # Webhook Events for Messages
         - id: $$cap_WEBHOOK_EVENTS_MESSAGES_DELETE
           label: Webhook Event for Message Deletion
           description: Enable or disable the webhook event for message deletions.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_SEND_MESSAGE
           label: Webhook Event for Sending Messages
           description: Enable or disable the webhook event for sending messages.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
 
         # Webhook Events for Contacts
         - id: $$cap_WEBHOOK_EVENTS_CONTACTS_SET
           label: Webhook Event for Contact Set
           description: Enable or disable the webhook event for setting contacts.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_CONTACTS_UPSERT
           label: Webhook Event for Contact Upsert
           description: Enable or disable the webhook event for upserting contacts.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_WEBHOOK_EVENTS_CONTACTS_UPDATE
           label: Webhook Event for Contact Update
           description: Enable or disable the webhook event for updating contacts.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         # Webhook Events for Presence Updates
         - id: $$cap_WEBHOOK_EVENTS_PRESENCE_UPDATE
           label: Webhook Event for Presence Updates
           description: Enable or disable the webhook event for presence updates.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events for Chats
         - id: $$cap_WEBHOOK_EVENTS_CHATS_SET
           label: Webhook Event for Chat Set
           description: Enable or disable the webhook event for setting chats.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_CHATS_UPSERT
           label: Webhook Event for Chat Upsert
           description: Enable or disable the webhook event for upserting chats.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_CHATS_UPDATE
           label: Webhook Event for Chat Update
           description: Enable or disable the webhook event for updating chats.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_CHATS_DELETE
           label: Webhook Event for Chat Deletion
           description: Enable or disable the webhook event for deleting chats.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events for Groups
         - id: $$cap_WEBHOOK_EVENTS_GROUPS_UPSERT
           label: Webhook Event for Group Upsert
           description: Enable or disable the webhook event for upserting groups.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_GROUPS_UPDATE
           label: Webhook Event for Group Update
           description: Enable or disable the webhook event for updating groups.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events for Group Participants
         - id: $$cap_WEBHOOK_EVENTS_GROUP_PARTICIPANTS_UPDATE
           label: Webhook Event for Group Participant Update
           description: Enable or disable the webhook event for updating group participants.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events for Connection Updates
         - id: $$cap_WEBHOOK_EVENTS_CONNECTION_UPDATE
           label: Webhook Event for Connection Updates
           description: Enable or disable the webhook event for connection updates.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
 
         # Webhook Events for Calls
         - id: $$cap_WEBHOOK_EVENTS_CALL
           label: Webhook Event for Calls
           description: Enable or disable the webhook event for calls.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: true
         - id: $$cap_WEBHOOK_EVENTS_NEW_JWT_TOKEN
           label: Webhook Event for New JWT Token
           description: Enable or disable the webhook event for new JWT token.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_CONFIG_SESSION_PHONE_CLIENT
           label: Phone Client Session Config
@@ -510,7 +510,7 @@ caproverOneClickApp:
         - id: $$cap_AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
           label: Expose in Fetch Instances
           description: Expose this instance in the fetch instances API call.
-          validRegex: /^(true|false)$/
+          validRegex: /^.*$/
           defaultValue: false
         - id: $$cap_AUTHENTICATION_JWT_EXPIRIN_IN
           label: JWT Expiry Time (seconds)
