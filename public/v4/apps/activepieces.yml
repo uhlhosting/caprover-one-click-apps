@@ -58,7 +58,7 @@ caproverOneClickApp:
           validRegex: /^\d+(\.\d+){0,2}$/
         - id: $$cap_ap_encryption_key
           label: AP Encryption Key (32 hex characters)
-          defaultValue: ''
+          defaultValue: $$cap_gen_random_hex(32)
           validRegex: /^[A-Fa-f0-9]{32}$/
         - id: $$cap_ap_jwt_secret
           label: AP JWT Secret
@@ -66,7 +66,7 @@ caproverOneClickApp:
           validRegex: /^.*$/
         - id: $$cap_ap_postgres_password
           label: PostgreSQL Password
-          defaultValue: ''
+          defaultValue: $$cap_gen_random_hex(16)
           validRegex: /^.*$/
         - id: $$cap_ap_postgres_database
           label: PostgreSQL Database Name
