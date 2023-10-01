@@ -6,6 +6,7 @@ services:
             - '8080:80'
         environment:
             AP_ENGINE_EXECUTABLE_PATH: dist/packages/engine/main.js
+            AP_NODE_EXECUTABLE_PATH: /usr/local/bin/node
             AP_ENCRYPTION_KEY: $$cap_ap_encryption_key
             AP_JWT_SECRET: $$cap_ap_jwt_secret
             AP_ENVIRONMENT: prod
@@ -19,6 +20,7 @@ services:
             AP_EXECUTION_MODE: UNSANDBOXED
             AP_REDIS_HOST: redis
             AP_REDIS_PORT: 6379
+            AP_REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379
             AP_SANDBOX_RUN_TIME_SECONDS: 600
             AP_TELEMETRY_ENABLED: true
             AP_TEMPLATES_SOURCE_URL: 'https://cloud.activepieces.com/api/v1/flow-templates'
