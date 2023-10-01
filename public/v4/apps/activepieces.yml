@@ -17,7 +17,7 @@ services:
             AP_JWT_SECRET: $$cap_ap_jwt_secret
             AP_NODE_EXECUTABLE_PATH: /usr/local/bin/node
             AP_NOTIFICATION_URL: http://localhost:8080/api/v1/notifications
-            AP_POSTGRES_DATABASE: activepieces
+            AP_POSTGRES_DATABASE: activepieces_db
             AP_POSTGRES_HOST: srv-captain--$$cap_appname-postgres
             AP_POSTGRES_PASSWORD: $$cap_ap_postgres_password
             AP_POSTGRES_PORT: 5432
@@ -62,7 +62,7 @@ caproverOneClickApp:
     variables:
         - id: $$cap_activepieces_version
           label: ActivePieces Version
-          defaultValue: 0.9.0
+          defaultValue: 0.10.1
           validRegex: /^\d+(\.\d+){0,2}$/
         - id: $$cap_postgres_version
           label: PostgreSQL Version
