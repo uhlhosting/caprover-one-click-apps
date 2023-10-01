@@ -17,7 +17,7 @@ services:
         networks:
             - evolution-net
         environment:
-            SERVER_URL: $$cap_SERVER_URL
+            SERVER_URL: https://$$cap_appname.$$cap_root_domain
             CORS_ORIGIN: $$cap_CORS_ORIGIN
             CORS_METHODS: $$cap_CORS_METHODS
             CORS_CREDENTIALS: $$cap_CORS_CREDENTIALS
@@ -35,7 +35,7 @@ services:
             CLEAN_STORE_CONTACTS: $$cap_CLEAN_STORE_CONTACTS
             CLEAN_STORE_CHATS: $$cap_CLEAN_STORE_CHATS
             DATABASE_ENABLED: $$cap_DATABASE_ENABLED
-            DATABASE_CONNECTION_URI: $$cap_DATABASE_CONNECTION_URI
+            DATABASE_CONNECTION_URI: mongodb://root:root@srv-captain--evolution-mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
             DATABASE_CONNECTION_DB_PREFIX_NAME: $$cap_DATABASE_CONNECTION_DB_PREFIX_NAME
             DATABASE_SAVE_DATA_INSTANCE: $$cap_DATABASE_SAVE_DATA_INSTANCE
             DATABASE_SAVE_DATA_NEW_MESSAGE: $$cap_DATABASE_SAVE_DATA_NEW_MESSAGE
@@ -43,10 +43,10 @@ services:
             DATABASE_SAVE_DATA_CONTACTS: $$cap_DATABASE_SAVE_DATA_CONTACTS
             DATABASE_SAVE_DATA_CHATS: $$cap_DATABASE_SAVE_DATA_CHATS
             REDIS_ENABLED: $$cap_REDIS_ENABLED
-            REDIS_URI: $$cap_REDIS_URI
+            REDIS_URI: redis://srv-captain--$$cap_appname-redis:6379
             REDIS_PREFIX_KEY: $$cap_REDIS_PREFIX_KEY
             RABBITMQ_ENABLED: $$cap_RABBITMQ_ENABLED
-            RABBITMQ_URI: $$cap_RABBITMQ_URI
+            RABBITMQ_URI: amqp://guest:guest@srv-captain--$$cap_appname-rabbitmq:5672
             WEBSOCKET_ENABLED: $$cap_WEBSOCKET_ENABLED
             WEBHOOK_GLOBAL_URL: $$cap_WEBHOOK_GLOBAL_URL
             WEBHOOK_GLOBAL_ENABLED: $$cap_WEBHOOK_GLOBAL_ENABLED
@@ -199,7 +199,7 @@ caproverOneClickApp:
           label: Log Baileys
           description: Log Baileys - "fatal" | "error" | "warn" | "info" | "debug" | "trace"
           validRegex: /^fatal|error|warn|info|debug|trace$/
-          defaultValue: info
+          defaultValue: 'info'
         - id: $$cap_DEL_INSTANCE
           label: Delete Instance After Disconnection
           description: |-
@@ -260,21 +260,16 @@ caproverOneClickApp:
           description: If you have a MongoDB instance running, you can enable it
           validRegex: /^(true|false)$/
           defaultValue: 'false'
-        - id: $$cap_DATABASE_CONNECTION_URI
-          label: MongoDB Connection URI
-          description: The MongoDB connection URI.
-          validRegex: /.+/
-          defaultValue: 'mongodb://root:root@srv-captain--evolution-mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true'
         - id: $$cap_DATABASE_CONNECTION_DB_PREFIX_NAME'
           label: MongoDB Connection DB Prefix Name
-          defaultValue: evolution
+          defaultValue: 'evolution'
         - id: $$cap_MONGO_VERSION
           label: MongoDB Version
-          defaultValue: latest
+          defaultValue: 'latest'
           description: Checkout their docker page for the valid tags https://hub.docker.com/_/mongo/tags
         - id: $$cap_MONGO_EXPRESS_VERSION
           label: Mongo-Express Version
-          defaultValue: latest
+          defaultValue: 'latest'
           description: Checkout their docker page for the valid tags https://hub.docker.com/_/mongo-express/tags
         - id: $$cap_DATABASE_SAVE_DATA_INSTANCE
           label: Save Data Instance in Database
@@ -302,11 +297,6 @@ caproverOneClickApp:
           description: Enable Redis to cache data.
           validRegex: /^(true|false)$/
           defaultValue: 'false'
-        - id: $$cap_REDIS_URI
-          label: Redis URI
-          description: Redis URI.
-          validRegex: /.+/
-          defaultValue: 'redis://srv-captain--$$cap_appname-redis:6379'
         - id: $$cap_REDIS_PREFIX_KEY
           label: Redis Prefix Key
           description: Redis prefix key.
@@ -322,11 +312,6 @@ caproverOneClickApp:
           description: If you have a RabbitMQ instance running, you can enable it https://hub.docker.com/_/redis/tags
           validRegex: /^(true|false)$/
           defaultValue: 'false'
-        - id: $$cap_RABBITMQ_URI
-          label: RabbitMQ URI
-          description: RabbitMQ URI.
-          validRegex: /.+/
-          defaultValue: 'amqp://guest:guest@srv-captain--$$cap_appname-rabbitmq:5672'
         - id: $$cap_RABBITMQ_VERSION
           label: RabbitMQ Version
           description: RabbitMQ version. Check out their valid tags at https://hub.docker.com/_/redis/tags
