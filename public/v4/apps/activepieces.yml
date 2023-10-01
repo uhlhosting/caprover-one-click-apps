@@ -18,8 +18,8 @@ services:
             AP_POSTGRES_USERNAME: postgres
             AP_POSTGRES_PASSWORD: $$cap_ap_postgres_password
             AP_EXECUTION_MODE: UNSANDBOXED
-            AP_REDIS_HOST: redis
-            AP_REDIS_PORT: 6379
+            # AP_REDIS_HOST: redis
+            # AP_REDIS_PORT: 6379
             AP_REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379
             AP_SANDBOX_RUN_TIME_SECONDS: 600
             AP_TELEMETRY_ENABLED: true
