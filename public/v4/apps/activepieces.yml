@@ -1,8 +1,10 @@
 captainVersion: 4
 services:
-    $$cap_appname-activepieces:
+    $$cap_appname:
         restart: on-failure
         image: activepieces/activepieces:$$cap_activepieces_version
+        volumes:
+            - $$cap_appname-activepieces-data:/activepieces/.activepieces
         ports:
             - '8080:80'
         environment:
@@ -33,6 +35,8 @@ services:
     $$cap_appname-postgres:
         restart: on-failure
         image: 'postgres:$$cap_postgres_version'
+        volumes:
+            - $$cap_appname-postgres-data:/var/lib/postgresql/data
         environment:
             POSTGRES_DB: $$cap_ap_postgres_database
             POSTGRES_PASSWORD: $$cap_ap_postgres_password
@@ -42,6 +46,8 @@ services:
     $$cap_appname-redis:
         restart: on-failure
         image: 'redis:$$cap_redis_version'
+        volumes:
+            - $$cap_appname-redis-data:/data
         caproverExtra:
             notExposeAsWebApp: true
 
