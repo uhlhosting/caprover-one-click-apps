@@ -2,8 +2,8 @@ captainVersion: 4
 services:
     # Mixpost
     $$cap_appname:
-        image: inovector/mixpost-pro-team:$$cap_MIXPOST_VERSION
-        #restart: unless-stopped
+        image: inovector/mixpost-enterprise:$$cap_MIXPOST_VERSION
+        restart: unless-stopped
         environment:
             APP_NAME: $$cap_MIXPOST_APP_NAME
             APP_KEY: $$cap_MIXPOST_APP_KEY
