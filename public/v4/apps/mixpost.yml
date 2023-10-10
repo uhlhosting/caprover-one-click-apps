@@ -14,7 +14,7 @@ services:
             APP_DEBUG: $$cap_MIXPOST_APP_DEBUG
             DB_HOST: srv-captain--$$cap_appname-db
             REDIS_HOST: srv-captain--$$cap_appname-cache
-            REDIS_PASSWORD:
+            REDIS_PASSWORD: $$cap_REDIS_PASSWORD
             LICENSE_KEY: $$cap_MIXPOST_LICENSE_KEY
             MIXPOST_CORE_PATH: $$cap_MIXPOST_CORE_PATH
             SENTRY_LARAVEL_DSN: $$cap_SENTRY_LARAVEL_DSN
@@ -109,8 +109,8 @@ caproverOneClickApp:
 
         - id: $$cap_REDIS_PASSWORD
           label: Cache | Password
-          description: Redis password.
-          defaultValue: $$cap_gen_random_hex(12)
+          description: Password of the Redis instance.
+          defaultValue: $$cap_gen_random_hex(16)
           validRegex: /^([^\s^\/])+$/
 
         - id: $$cap_MIXPOST_APP_NAME
