@@ -51,15 +51,23 @@ services:
         volumes:
             - $$cap_appname-db:/var/lib/mysql
     # Redis Cache
+    # $$cap_appname-cache:
+    #     image: 'redis:$$cap_REDIS_VERSION'
+    #     command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
+    #     healthcheck:
+    #         test: ['CMD', 'redis-cli', 'ping']
+    #         retries: 3
+    #         timeout: 5s
+    #     caproverExtra:
+    #         notExposeAsWebApp: 'true'
+    #     volumes:
+    #         - $$cap_appname-cache:/data
     $$cap_appname-cache:
-        image: 'redis:$$cap_REDIS_VERSION'
-        command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
-        healthcheck:
-            test: ['CMD', 'redis-cli', 'ping']
-            retries: 3
-            timeout: 5s
         caproverExtra:
             notExposeAsWebApp: 'true'
+            dockerfileLines:
+                - FROM redis:$$cap_REDIS_VERSION
+                - CMD redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
         volumes:
             - $$cap_appname-cache:/data
 caproverOneClickApp:
