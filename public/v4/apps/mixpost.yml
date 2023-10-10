@@ -7,7 +7,7 @@ services:
         environment:
             APP_NAME: $$cap_MIXPOST_APP_NAME
             APP_KEY: $$cap_MIXPOST_APP_KEY
-            APP_URL: http://$$cap_appname.$$cap_root_domain
+            APP_URL: https://$$cap_appname.$$cap_root_domain
             DB_DATABASE: $$cap_MYSQL_DATABASE
             DB_USERNAME: $$cap_MYSQL_USER
             DB_PASSWORD: $$cap_MYSQL_PASSWORD
