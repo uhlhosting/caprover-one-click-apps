@@ -82,43 +82,36 @@ caproverOneClickApp:
           description: Select between Mixpost Enterprise (SaaS), Mixpost Pro (Pro) or Mixpost Free editions.
           defaultValue: inovector/mixpost-enterprise
           validRegex: /^(inovector\/mixpost-enterprise|inovector\/mixpost-pro|inovector\/mixpost)$/
-
         - id: $$cap_MIXPOST_LICENSE_KEY
           label: Application | License key
           description: Mixpost license key. Check out https://mixpost.app/profile/purchases
           defaultValue: ''
           validRegex: /^[a-zA-Z0-9]{64}$/
-
         - id: $$cap_MIXPOST_VERSION
           label: Application | Version
           description: Mixpost version. Check out their valid tags at https://hub.docker.com/r/inovector/mixpost
           defaultValue: 'latest'
           validRegex: /.{1,}/
-
         - id: $$cap_MYSQL_VERSION
           label: Database | Version
           description: MySQL version. Check out their valid tags at https://hub.docker.com/_/mysql/tags
           defaultValue: '8.1'
           validRegex: /.{1,}/
-
         - id: $$cap_REDIS_VERSION
           label: Cache | Version
           description: Redis version. Check out their valid tags at https://hub.docker.com/_/redis/tags
           defaultValue: '7.2.0-alpine'
           validRegex: /.{1,}/
-
         - id: $$cap_REDIS_PASSWORD
           label: Cache | Password
           description: Password of the Redis instance.
           defaultValue: $$cap_gen_random_hex(16)
           validRegex: /^([^\s^\/])+$/
-
         - id: $$cap_MIXPOST_APP_NAME
           label: Application | Name
           description: Name of the application.
           defaultValue: UHLCrossPost
           validRegex: /.{1,}/
-
         - id: $$cap_MIXPOST_APP_KEY
           label: Application | Key
           description: |-
@@ -126,67 +119,55 @@ caproverOneClickApp:
               Use `https://mixpost.app/encryption-key-generator` to generate a key.
           defaultValue: base64:qjokLGjo5b2ev0aGjnTZ0vBPcUVVIkPDKIKtFzfMfq8=
           validRegex: /^base64:[a-zA-Z0-9+/=]+$/
-
         - id: $$cap_MIXPOST_APP_DEBUG
           label: Application | Debug Information
           description: Whether to show debug information.
           defaultValue: 'false'
           validRegex: /^(true|false)$/
-
         - id: $$cap_MYSQL_DATABASE
           label: Database | Name
           description: Name of the MySQL database.
           defaultValue: mixpost
           validRegex: /^([^\s^\/])+$/
-
         - id: $$cap_MYSQL_USER
           label: Database | User Name
           description: Name of the MySQL user.
           defaultValue: mixpost
           validRegex: /^([^\s^\/])+$/
-
         - id: $$cap_MYSQL_PASSWORD
           label: Database | User Password
           description: Password of the MySQL user.
           defaultValue: $$cap_gen_random_hex(16)
           validRegex: /^([^\s^\/])+$/
-
         - id: $$cap_MIXPOST_CORE_PATH
           label: MixPost Core Path
           description: READ MIXPOST DOCS!
           defaultValue: ''
           validRegex: /^.*$/
-
         # - id: $$cap_SENTRY_LARAVEL_DSN
         #   label: Sentry Laravel DSN
         #   defaultValue: ''
         #   validRegex: /^https?:\/\/.+$/
-
         - id: $$cap_MAIL_HOST
           label: Mail Host
           defaultValue: ''
           validRegex: /^(?:(?:[a-zA-Z\d](?:[a-zA-Z\d-]*[a-zA-Z\d])?\.)+[a-zA-Z]{2,}|localhost)$/
-
         - id: $$cap_MAIL_PORT
           label: Mail Port
           defaultValue: '25'
           validRegex: /^\d+$/
-
         - id: $$cap_MAIL_USERNAME
           label: Mail Username
           defaultValue: ''
           validRegex: /^.*$/
-
         - id: $$cap_MAIL_PASSWORD
           label: Mail Password
           defaultValue: ''
           validRegex: /^.*$/
-
         - id: $$cap_MAIL_FROM_ADDRESS
           label: Mail From Address
           defaultValue: ''
           validRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
         - id: $$cap_MAIL_FROM_NAME
           label: Mail From Name
           defaultValue: ''
