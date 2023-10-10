@@ -14,6 +14,7 @@ services:
             APP_DEBUG: $$cap_MIXPOST_APP_DEBUG
             DB_HOST: srv-captain--$$cap_appname-db
             REDIS_HOST: srv-captain--$$cap_appname-cache
+            REDIS_PASSWORD:
             LICENSE_KEY: $$cap_MIXPOST_LICENSE_KEY
             MIXPOST_CORE_PATH: $$cap_MIXPOST_CORE_PATH
             SENTRY_LARAVEL_DSN: $$cap_SENTRY_LARAVEL_DSN
@@ -52,7 +53,7 @@ services:
     # Redis Cache
     $$cap_appname-cache:
         image: 'redis:$$cap_REDIS_VERSION'
-        command: redis-server --appendonly yes --replica-read-only no
+        command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
         healthcheck:
             test: ['CMD', 'redis-cli', 'ping']
             retries: 3
@@ -106,6 +107,12 @@ caproverOneClickApp:
           defaultValue: '7.2.0-alpine'
           validRegex: /.{1,}/
 
+        - id: $$cap_REDIS_PASSWORD
+          label: Cache | Password
+          description: Redis password.
+          defaultValue: $$cap_gen_random_hex(12)
+          validRegex: /^([^\s^\/])+$/
+
         - id: $$cap_MIXPOST_APP_NAME
           label: Application | Name
           description: Name of the application.
@@ -146,13 +153,14 @@ caproverOneClickApp:
 
         - id: $$cap_MIXPOST_CORE_PATH
           label: MixPost Core Path
+          description: READ MIXPOST DOCS!
           defaultValue: ''
           validRegex: /^.*$/
 
-        - id: $$cap_SENTRY_LARAVEL_DSN
-          label: Sentry Laravel DSN
-          defaultValue: ''
-          validRegex: /^https?:\/\/.+$/
+        # - id: $$cap_SENTRY_LARAVEL_DSN
+        #   label: Sentry Laravel DSN
+        #   defaultValue: ''
+        #   validRegex: /^https?:\/\/.+$/
 
         - id: $$cap_MAIL_HOST
           label: Mail Host
