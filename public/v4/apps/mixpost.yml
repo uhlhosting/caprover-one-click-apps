@@ -118,7 +118,7 @@ caproverOneClickApp:
               Base64 encoded application key for encryption.
               Use `https://mixpost.app/encryption-key-generator` to generate a key.
           defaultValue: base64:qjokLGjo5b2ev0aGjnTZ0vBPcUVVIkPDKIKtFzfMfq8=
-          validRegex: /^([^\s^\/])+$/
+          validRegex: /^base64:[a-zA-Z0-9+/=]+$/
 
         - id: $$cap_MIXPOST_APP_DEBUG
           label: Application | Debug Information
