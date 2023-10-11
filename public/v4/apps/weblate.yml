@@ -1,11 +1,13 @@
 captainVersion: 4
 services:
     $$cap_appname-redis:
-        image: redis:$$cap_redis_version
-        volumes:
-            - $$cap_appname-cache-data:/app/data
         caproverExtra:
             notExposeAsWebApp: 'true'
+            dockerfileLines:
+                - FROM redis:$$cap_redis_version
+                - CMD redis-server, --save, '60', '1'
+        volumes:
+            - $$cap_appname-cache:/data
     $$cap_appname-postgres:
         image: postgres:$$cap_postgres_version
         volumes:
