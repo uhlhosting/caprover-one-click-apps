@@ -64,6 +64,19 @@ services:
             containerHttpPort: '8080'
             websocketSupport: 'true'
 caproverOneClickApp:
+    displayName: Weblate
+    description: Open-Source Translation Management System
+    isOfficial: true
+    documentation: https://docs.weblate.org/
+    instructions:
+        start: |-
+            Weblate is a free and open-source translation management system that simplifies the process of translating software, documentation, and other text assets.
+            With Weblate, you can collaborate with a community of translators, automate translation workflows, and integrate with other tools like version control systems.
+        end: |-
+            Weblate has been successfully deployed! It may take a few moments before it's fully started.
+            You can access the application at `http://$$cap_appname.$$cap_root_domain`.
+            Find the administrator login details in the logs.
+            If you enabled HTTPS, you should adjust the `WEBLATE_SITE_DOMAIN` environment variable accordingly.
     variables:
         - id: $$cap_postgres_version
           label: Postgres Docker version
@@ -190,10 +203,3 @@ caproverOneClickApp:
         - id: $$cap_weblate_gitlab_username
           label: Weblate GitLab Username
           description: GitLab Username for Weblate integration.
-    instructions:
-        start: Open-source collaborative localization tools. Check all the environment settings you can set here - https://github.com/WeblateOrg/docker-compose/blob/master/environment
-        end: Weblate is deployed and available as http://srv-captain--$$cap_appname:80. Note that the application may take up to ten minutes to become available.
-    displayName: weblate
-    isOfficial: true
-    description: Weblate is a copylefted libre software web-based continuous localization system, used by over 1150 libre projects and companies in more than 115 countries.
-    documentation: https://hub.docker.com/r/weblate/weblate https://github.com/WeblateOrg/docker-compose https://docs.weblate.org/en/latest/admin/install/docker.html
