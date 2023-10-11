@@ -28,6 +28,8 @@ services:
             - $$cap_appname-data:/app/data
         restart: always
         environment:
+            CLIENT_MAX_BODY_SIZE: 256M
+            DJANGO_SETTINGS_MODULE: weblate.settings_docker
             POSTGRES_DATABASE: weblate
             POSTGRES_HOST: srv-captain--$$cap_appname-postgres
             POSTGRES_PASSWORD: $$cap_pg_pass
