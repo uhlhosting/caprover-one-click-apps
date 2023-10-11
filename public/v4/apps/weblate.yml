@@ -99,10 +99,20 @@ caproverOneClickApp:
           description: Password must be at least 30 characters.  Please use a random string.
           defaultValue: $$cap_gen_random_hex(30)
           validRegex: /^[^\@]{30,}$/
-        - id: $$cap_open_registration
-          label: Allow open registration of people (0/1)
-          defaultValue: 0
-          description: Do you allow people to register openly to the platform?
+        - id: $$cap_weblate_loglevel
+          label: Weblate Log Level
+          defaultValue: 'INFO'
+          description: Log level for Weblate. Choose among 'DEBUG', 'INFO', 'WARNING', 'ERROR', and 'CRITICAL'.
+          validRegex: /^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$/
+        - id: $$cap_weblate_registration_open
+          label: Weblate Open Registration
+          defaultValue: '0'
+          description: Allow open registration on Weblate. Use 1 for yes and 0 for no.
+          validRegex: /^[01]$/
+        - id: $$cap_weblate_server_email
+          label: Weblate Server Email
+          description: Server email address for Weblate. Used for sending system emails.
+          validRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         - id: $$cap_secure_ssl_redirect
           label: Secure SSL Redirect
           defaultValue: 'True'
