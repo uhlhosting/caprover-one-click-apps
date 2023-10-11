@@ -17,9 +17,9 @@ services:
             REDIS_PASSWORD: $$cap_REDIS_PASSWORD
             LICENSE_KEY: $$cap_MIXPOST_LICENSE_KEY
             MIXPOST_CORE_PATH: $$cap_MIXPOST_CORE_PATH
-            SENTRY_LARAVEL_DSN: $$cap_SENTRY_LARAVEL_DSN
-            SENTRY_TRACES_SAMPLE_RATE: 1.0
-            VITE_SENTRY_DSN_PUBLIC: $$cap_SENTRY_LARAVEL_DSN
+            # SENTRY_LARAVEL_DSN: $$cap_SENTRY_LARAVEL_DSN
+            # SENTRY_TRACES_SAMPLE_RATE: 1.0
+            # VITE_SENTRY_DSN_PUBLIC: $$cap_SENTRY_LARAVEL_DSN
             MAIL_HOST: $$cap_MAIL_HOST
             MAIL_PORT: $$cap_MAIL_PORT
             MAIL_USERNAME: $$cap_MAIL_USERNAME
@@ -51,25 +51,25 @@ services:
         volumes:
             - $$cap_appname-db:/var/lib/mysql
     # Redis Cache
-    # $$cap_appname-cache:
-    #     image: 'redis:$$cap_REDIS_VERSION'
-    #     command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
-    #     healthcheck:
-    #         test: ['CMD', 'redis-cli', 'ping']
-    #         retries: 3
-    #         timeout: 5s
-    #     caproverExtra:
-    #         notExposeAsWebApp: 'true'
-    #     volumes:
-    #         - $$cap_appname-cache:/data
     $$cap_appname-cache:
+        image: 'redis:$$cap_REDIS_VERSION'
+        command: redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            retries: 3
+            timeout: 5s
         caproverExtra:
             notExposeAsWebApp: 'true'
-            dockerfileLines:
-                - FROM redis:$$cap_REDIS_VERSION
-                - CMD redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
         volumes:
             - $$cap_appname-cache:/data
+    # $$cap_appname-cache:
+    #     caproverExtra:
+    #         notExposeAsWebApp: 'true'
+    #         dockerfileLines:
+    #             - FROM redis:$$cap_REDIS_VERSION
+    #             - CMD redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
+    #     volumes:
+    #         - $$cap_appname-cache:/data
 caproverOneClickApp:
     displayName: Mixpost
     description: Self-Hosted Social Media Management Software
