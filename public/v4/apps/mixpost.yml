@@ -24,7 +24,7 @@ services:
             MAIL_PORT: $$cap_MAIL_PORT
             MAIL_USERNAME: $$cap_MAIL_USERNAME
             MAIL_PASSWORD: $$cap_MAIL_PASSWORD
-            MAIL_ENCRYPTION: tls
+            MAIL_ENCRYPTION: $$cap_MAIL_ENCRYPTION
             MAIL_FROM_ADDRESS: $$cap_MAIL_FROM_ADDRESS
             MAIL_FROM_NAME: $$cap_MAIL_FROM_NAME
         depends_on:
@@ -33,6 +33,8 @@ services:
         volumes:
             - $$cap_appname-storage:/var/www/html/storage/app
             - $$cap_appname-logs:/var/www/html/storage/logs
+        caproverExtra:
+            websocketSupport: 'true'
     # Mysql Database
     $$cap_appname-db:
         restart: unless-stopped
@@ -42,6 +44,7 @@ services:
             timeout: 5s
         caproverExtra:
             notExposeAsWebApp: 'true'
+            websocketSupport: 'true'
         image: mysql:$$cap_MYSQL_VERSION
         environment:
             MYSQL_ROOT_PASSWORD: $$cap_MYSQL_PASSWORD
@@ -152,10 +155,9 @@ caproverOneClickApp:
           description: READ MIXPOST DOCS!
           defaultValue: ''
           validRegex: /^.*$/
-        # - id: $$cap_SENTRY_LARAVEL_DSN
-        #   label: Sentry Laravel DSN
-        #   defaultValue: ''
-        #   validRegex: /^https?:\/\/.+$/
+        - id: $$cap_SENTRY_LARAVEL_DSN
+          label: Sentry Laravel DSN
+          defaultValue: ''
         - id: $$cap_MAIL_HOST
           label: Mail Host
           defaultValue: ''
@@ -163,6 +165,7 @@ caproverOneClickApp:
         - id: $$cap_MAIL_PORT
           label: Mail Port
           defaultValue: '25'
+          description: Port of mail server 25, 586...
           validRegex: /^\d+$/
         - id: $$cap_MAIL_USERNAME
           label: Mail Username
@@ -172,6 +175,11 @@ caproverOneClickApp:
           label: Mail Password
           defaultValue: ''
           validRegex: /^.*$/
+        - id: $$cap_MAIL_ENCRYPTION
+          label: Mail Encryption
+          defaultValue: 'tls'
+          description: Encryption of mail server
+          validRegex: /^(tls|ssl)$/
         - id: $$cap_MAIL_FROM_ADDRESS
           label: Mail From Address
           defaultValue: ''
