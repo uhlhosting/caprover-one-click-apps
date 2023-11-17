@@ -83,7 +83,7 @@ caproverOneClickApp:
           label: SMTP Password
           description: Password for SMTP.
           defaultValue: $$cap_gen_random_hex(16)
-          validRegex: /^[a-f0-9]{16}$/
+          validRegex: /^([^\s^\/])+$/
 
         - id: $$cap_tolgee_smtp_port
           label: SMTP Port
