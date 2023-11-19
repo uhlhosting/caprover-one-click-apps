@@ -82,7 +82,12 @@ caproverOneClickApp:
     variables:
         - id: $$cap_authentik_image
           label: Authentik Image
-          defaultValue: 'ghcr.io/goauthentik/server:2023.10.3'
+          defaultValue: 'ghcr.io/goauthentik/server'
+          validRegex: /.{1,}/
+
+        - id: $$cap_authentik_tag
+          label: Authentik Tag
+          defaultValue: '2023.10.3'
           validRegex: /.{1,}/
 
         - id: $$cap_pg_pass
