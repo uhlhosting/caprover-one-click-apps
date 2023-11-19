@@ -15,10 +15,9 @@ services:
             - $$cap_appname-custom-templates:/templates
         caproverExtra:
             containerHttpPort: '9000'
-            containerHttpsPort: '9443'
             websocketSupport: 'true'
             dockerfileLines:
-                - CMD ["worker"]
+                - CMD exec server
         depends_on:
             - $$cap_appname-postgres
             - $$cap_appname-redis
@@ -43,7 +42,7 @@ services:
             - $$cap_appname
         caproverExtra:
             dockerfileLines:
-                - CMD ["worker"]
+                - CMD exec worker
             notExposeAsWebApp: 'true'
 
     $$cap_appname-postgres:
