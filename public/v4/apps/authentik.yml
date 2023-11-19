@@ -19,6 +19,7 @@ services:
         depends_on:
             - $$cap_appname-postgres
             - $$cap_appname-redis
+            - $$cap_appname-worker
 
     $$cap_appname-worker:
         image: $$cap_authentik_image:$$cap_authentik_tag
