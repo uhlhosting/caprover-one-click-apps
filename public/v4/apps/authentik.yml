@@ -47,7 +47,7 @@ services:
             notExposeAsWebApp: 'true'
 
     $$cap_appname-postgres:
-        image: postgres:$$cap_appname-postgres-version
+        image: postgres:$$cap_pg_image
         volumes:
             - $$cap_appname-postgres-data:/var/lib/postgresql/data
         restart: always
@@ -99,3 +99,8 @@ caproverOneClickApp:
           label: PostgreSQL Database
           defaultValue: 'authentik'
           validRegex: /.{1,}/
+
+        - id: $$cap_pg_image
+          label: Postgres Version
+          defaultValue: '15'
+          validRegex: /^([0-9]{1,2})$/
