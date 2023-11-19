@@ -2,8 +2,8 @@ captainVersion: 4
 services:
     $$cap_appname:
         image: $$cap_authentik_image:$$cap_authentik_tag
-        restart: unless-stopped
         command: server
+        restart: unless-stopped
         environment:
             AUTHENTIK_REDIS__HOST: srv-captain--$$cap_appname-redis
             AUTHENTIK_POSTGRESQL__HOST: srv-captain--$$cap_appname-postgres
@@ -16,14 +16,13 @@ services:
         caproverExtra:
             containerHttpPort: '9000'
             websocketSupport: 'true'
-            dockerfileLines:
-                - CMD exec server
         depends_on:
             - $$cap_appname-postgres
             - $$cap_appname-redis
 
     $$cap_appname-worker:
         image: $$cap_authentik_image:$$cap_authentik_tag
+        command: worker
         restart: unless-stopped
         environment:
             AUTHENTIK_REDIS__HOST: srv-captain--$$cap_appname-redis
@@ -39,10 +38,7 @@ services:
         depends_on:
             - $$cap_appname-postgres
             - $$cap_appname-redis
-            - $$cap_appname
         caproverExtra:
-            dockerfileLines:
-                - CMD exec worker
             notExposeAsWebApp: 'true'
 
     $$cap_appname-postgres:
