@@ -102,9 +102,9 @@ services:
             ERL_AFLAGS: -proto_dist inet_tcp
             ENABLE_TAILSCALE: 'false'
             DNS_NODES: "''"
-    depends_on:
-        - $$cap_appname-analytics
-        - $$cap_appname-db
+        depends_on:
+            - $$cap_appname-analytics
+            - $$cap_appname-db
 
     $$cap_appname-rest:
         image: postgrest/postgrest:v11.2.0
