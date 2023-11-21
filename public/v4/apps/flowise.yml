@@ -47,7 +47,7 @@ caproverOneClickApp:
         start: >-
             Flowise is a powerful AI tool. Before you start, make sure you have all your environment variables ready to input.
         end: >-
-            Your Flowise app is now deployed and running!
+            Your Flowise app is now deployed and running! Access it at `http://$$cap_appname.$$cap_root_domain`.
     displayName: 'Flowise'
     isOfficial: true
     description: 'Flowise AI Tool'
