@@ -31,6 +31,7 @@ caproverOneClickApp:
           description: 'Your Flowise username'
         - id: $$cap_flowise_password
           label: Flowise Password
+          defaultValue: '$$cap_gen_random_hex(16)'
           description: 'Your Flowise password'
     instructions:
         start: >-
