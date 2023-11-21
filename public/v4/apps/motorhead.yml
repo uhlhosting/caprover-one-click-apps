@@ -1,6 +1,10 @@
 captainVersion: 4
 services:
     $$cap_appname:
+        depends_on:
+            - $$cap_appname-redis
+        restart: on-failure
+        image: 'ghcr.io/getmetal/motorhead:latest'
         environment:
             PORT: 8080
             MOTORHEAD_MAX_WINDOW_SIZE: 25
@@ -10,10 +14,11 @@ services:
             OPENAI_API_KEY: $$cap_openai_api_key
         caproverExtra:
             containerHttpPort: '8080'
+            websocketSupport: true
 
     $$cap_appname-redis:
         restart: on-failure
-        image: 'redis:$$cap_redis_version'
+        image: 'redis/redis-stack-server:latest'
         volumes:
             - $$cap_appname-redis-data:/data
         caproverExtra:
@@ -25,9 +30,9 @@ caproverOneClickApp:
           label: OpenAI API Key
           description: 'Your OpenAI API key.'
     instructions:
-        start: 'Motorhead is starting along with Redis.'
-        end: 'Motorhead and Redis have been deployed.'
-    displayName: 'Motorhead'
+        start: 'Motörhead is starting along with Redis.'
+        end: 'Motörhead and Redis have been deployed.'
+    displayName: 'Motörhead'
     isOfficial: true
-    description: 'Your description for the Motorhead service'
-    documentation: 'Link to documentation if available'
+    description: '🧠 Motörhead is a memory and information retrieval server for LLMs.'
+    documentation: 'https://getmetal.io/'
