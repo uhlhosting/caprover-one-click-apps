@@ -1,6 +1,6 @@
 captainVersion: 4
 services:
-    $$cap_appname-typesense:
+    $$cap_appname:
         image: typesense/typesense:0.25.1
         restart: on-failure
         volumes:
@@ -14,7 +14,7 @@ caproverOneClickApp:
     variables:
         - id: $$cap_typesense_api_key
           label: Typesense API Key
-          defaultValue: 'xyz'
+          defaultValue: $$cap_gen_random_hex(16)
     instructions:
         start: 'Typesense is starting. Make sure to set the API key.'
         end: 'Typesense has been deployed. Access it on port 8108.'
