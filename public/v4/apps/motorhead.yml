@@ -1,0 +1,33 @@
+captainVersion: 4
+services:
+    $$cap_appname:
+        environment:
+            PORT: 8080
+            MOTORHEAD_MAX_WINDOW_SIZE: 25
+            MOTORHEAD_LONG_TERM_MEMORY: 'true'
+            MOTORHEAD_MODEL: 'gpt-3.5-turbo'
+            REDIS_URL: 'redis://srv-captain--$$cap_appname-redis:6379'
+            OPENAI_API_KEY: $$cap_openai_api_key
+        caproverExtra:
+            containerHttpPort: '8080'
+
+    $$cap_appname-redis:
+        restart: on-failure
+        image: 'redis:$$cap_redis_version'
+        volumes:
+            - $$cap_appname-redis-data:/data
+        caproverExtra:
+            notExposeAsWebApp: true
+
+caproverOneClickApp:
+    variables:
+        - id: $$cap_openai_api_key
+          label: OpenAI API Key
+          description: 'Your OpenAI API key.'
+    instructions:
+        start: 'Motorhead is starting along with Redis.'
+        end: 'Motorhead and Redis have been deployed.'
+    displayName: 'Motorhead'
+    isOfficial: true
+    description: 'Your description for the Motorhead service'
+    documentation: 'Link to documentation if available'
