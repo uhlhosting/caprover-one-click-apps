@@ -12,7 +12,6 @@ services:
             LOG_PATH: /data/.flowise/logs
             TOOL_FUNCTION_BUILTIN_DEP: crypto,fs
             TOOL_FUNCTION_EXTERNAL_DEP: moment,lodash
-            DEBUG: $$cap_debug
             DATABASE_PATH: $$cap_database_path
             DATABASE_TYPE: $$cap_database_type
             DATABASE_PORT: $$cap_database_port
@@ -69,10 +68,6 @@ caproverOneClickApp:
           defaultValue: '$$cap_gen_random_hex(16)'
           description: 'Your Flowise password'
 
-        - id: $$cap_debug
-          label: Debug Mode
-          defaultValue: 'info'
-
         - id: $$cap_database_type
           label: Database Type
           defaultValue: 'postgres'
@@ -80,10 +75,6 @@ caproverOneClickApp:
         - id: $$cap_database_port
           label: Database Port
           defaultValue: '5432'
-
-        - id: $$cap_database_host
-          label: Database Host
-          defaultValue: 'srv-captain--$$cap_appname-db'
 
         - id: $$cap_database_name
           label: Database Name
