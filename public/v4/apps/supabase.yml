@@ -2,10 +2,10 @@
 captainVersion: 4
 services:
     $$cap_appname-studio:
-        image: supabase/studio:20231023-7e2cd92
+        image: supabase/studio:latest
         restart: unless-stopped
         caproverExtra:
-            containerHttpPort: '3000'
+            containerHttpPort: 3000
         environment:
             STUDIO_PG_META_URL: http://$$cap_appname-meta:8080
             POSTGRES_PASSWORD: $$cap_postgres_password
@@ -20,7 +20,7 @@ services:
             NEXT_PUBLIC_ENABLE_LOGS: 'true'
             NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
     depends_on:
-        - $$cap_appname-postgres
+        - $$cap_appname-db
 
     $$cap_appname-kong:
         image: kong:2.8.1
