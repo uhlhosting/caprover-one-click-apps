@@ -7,9 +7,9 @@ services:
             FLOWISE_USERNAME: $$cap_flowise_username
             FLOWISE_PASSWORD: $$cap_flowise_password
             #DATABASE_PATH: /root/.flowise
-            APIKEY_PATH: /data/.flowise
-            SECRETKEY_PATH: /data/.flowise
-            LOG_PATH: /data/.flowise/logs
+            APIKEY_PATH: /root/.flowise
+            SECRETKEY_PATH: /root/.flowise
+            LOG_PATH: /root/.flowise/logs
             TOOL_FUNCTION_BUILTIN_DEP: crypto,fs
             TOOL_FUNCTION_EXTERNAL_DEP: moment,lodash
             DATABASE_PATH: $$cap_database_path
@@ -28,7 +28,7 @@ services:
                 - FROM flowiseai/flowise:$$cap_flowise_version
                 - CMD /bin/sh -c "sleep 3; flowise start"
         volumes:
-            - $$cap_appname-db-data:/data/.flowise
+            - $$cap_appname-db-data:/root/.flowise
         depends_on:
             - $$cap_appname-db
     $$cap_appname-db:
