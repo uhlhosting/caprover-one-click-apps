@@ -1,8 +1,8 @@
 captainVersion: 4
 services:
+    # Server
     $$cap_appname:
         image: $$cap_authentik_image:$$cap_authentik_tag
-        command: server
         restart: unless-stopped
         environment:
             AUTHENTIK_REDIS__HOST: srv-captain--$$cap_appname-redis
@@ -16,14 +16,16 @@ services:
         caproverExtra:
             containerHttpPort: '9000'
             websocketSupport: 'true'
+            dockerfileLines:
+                - FROM $$cap_authentik_image:$$cap_authentik_tag
+                - CMD exec server
         depends_on:
             - $$cap_appname-postgres
             - $$cap_appname-redis
             - $$cap_appname-worker
-
+    # Worker
     $$cap_appname-worker:
         image: $$cap_authentik_image:$$cap_authentik_tag
-        command: worker
         restart: unless-stopped
         environment:
             AUTHENTIK_REDIS__HOST: srv-captain--$$cap_appname-redis
@@ -41,7 +43,10 @@ services:
             - $$cap_appname-redis
         caproverExtra:
             notExposeAsWebApp: 'true'
-
+            dockerfileLines:
+                - FROM $$cap_authentik_image:$$cap_authentik_tag
+                - CMD exec worker
+    # DB
     $$cap_appname-postgres:
         image: postgres:$$cap_pg_image
         volumes:
@@ -53,15 +58,15 @@ services:
             POSTGRES_DB: $$cap_pg_db
         caproverExtra:
             notExposeAsWebApp: 'true'
-
+    # Redis
     $$cap_appname-redis:
         volumes:
             - $$cap_appname-redis-data:/data
         restart: always
         caproverExtra:
             dockerfileLines:
-                - FROM redis:alpine
-                - CMD ["redis-server", "--save", "60 1", "--loglevel", "warning"]
+                - FROM redis:$$cap_redis_version
+                - CMD exec redis-server --save 60 1 --loglevel warning
             notExposeAsWebApp: 'true'
 
 caproverOneClickApp:
@@ -105,3 +110,8 @@ caproverOneClickApp:
           label: Postgres Version
           defaultValue: '15'
           validRegex: /^([0-9]{1,2})$/
+
+        - id: $$cap_redis_version
+          label: Redis Version
+          defaultValue: '7.2'
+          validRegex: /.{1,}/
