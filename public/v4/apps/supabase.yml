@@ -259,7 +259,7 @@ services:
     $$cap_appname-vector:
         image: timberio/vector:0.28.1-alpine
         volumes:
-            - ./volumes/logs/vector.yml:/etc/vector/vector.yml:ro
+            - /volumes/logs/vector.yml:/etc/vector/vector.yml:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
         caproverExtra:
             notExposeAsWebApp: 'true'
