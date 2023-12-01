@@ -5,18 +5,19 @@ services:
         image: supabase/studio:latest
         restart: unless-stopped
         caproverExtra:
+            websocketSupport: 'true'
             containerHttpPort: 3000
         environment:
-            STUDIO_PG_META_URL: http://$$cap_appname-meta:8080
+            STUDIO_PG_META_URL: http://srv-captain--$$cap_appname-meta:8080
             POSTGRES_PASSWORD: $$cap_postgres_password
             DEFAULT_ORGANIZATION_NAME: $$cap_studio_default_organization
             DEFAULT_PROJECT_NAME: $$cap_studio_default_project
-            SUPABASE_URL: http://$$cap_appname-kong:8000
-            SUPABASE_PUBLIC_URL: $$cap_supabase_public_url
+            SUPABASE_URL: srv-captain--$$cap_appname-kong:8000
+            SUPABASE_PUBLIC_URL: srv-captain--$$cap_supabase_public_url
             SUPABASE_ANON_KEY: $$cap_anon_key
             SUPABASE_SERVICE_KEY: $$cap_service_role_key
             LOGFLARE_API_KEY: $$cap_logflare_api_key
-            LOGFLARE_URL: http://$$cap_appname-analytics:4000
+            LOGFLARE_URL: http://srv-captain--$$cap_appname-analytics:4000
             NEXT_PUBLIC_ENABLE_LOGS: 'true'
             NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
         depends_on:
@@ -29,6 +30,7 @@ services:
         caproverExtra:
             containerHttpPort: '8000'
             containerHttpsPort: '8443'
+            websocketSupport: 'true'
         environment:
             KONG_DATABASE: 'off'
             KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
@@ -53,7 +55,7 @@ services:
             GOTRUE_API_PORT: 9999
             API_EXTERNAL_URL: $$cap_api_external_url
             GOTRUE_DB_DRIVER: postgres
-            GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:$$cap_postgres_password@$$cap_appname-db:5432/$$cap_db_name
+            GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:$$cap_postgres_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
             GOTRUE_SITE_URL: $$cap_gotrue_site_url
             GOTRUE_URI_ALLOW_LIST: $$cap_gotrue_uri_allow_list
             GOTRUE_DISABLE_SIGNUP: $$cap_gotrue_disable_signup
@@ -99,7 +101,7 @@ services:
             DB_ENC_KEY: supabaserealtime
             API_JWT_SECRET: $$cap_jwt_secret
             SECRET_KEY_BASE: UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
-            ERL_AFLAGS: -proto_dist inet_tcp
+            ERL_AFLAGS: '-proto_dist inet_tcp'
             ENABLE_TAILSCALE: 'false'
             DNS_NODES: "''"
         depends_on:
@@ -114,7 +116,7 @@ services:
             dockerfileLines:
                 - CMD exec postgrest
         environment:
-            PGRST_DB_URI: postgres://authenticator:$$cap_postgres_password@$$cap_appname-db:5432/$$cap_db_name
+            PGRST_DB_URI: postgres://authenticator:$$cap_postgres_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
             PGRST_DB_SCHEMAS: $$cap_pgrst_db_schemas
             PGRST_DB_ANON_ROLE: anon
             PGRST_JWT_SECRET: $$cap_jwt_secret
@@ -133,9 +135,9 @@ services:
         environment:
             ANON_KEY: $$cap_anon_key
             SERVICE_KEY: $$cap_service_role_key
-            POSTGREST_URL: http://$$cap_appname-rest:3000
+            POSTGREST_URL: http://srv-captain--$$cap_appname-rest:3000
             PGRST_JWT_SECRET: $$cap_jwt_secret
-            DATABASE_URL: postgres://supabase_storage_admin:$$cap_postgres_password@$$cap_appname-db:5432/$$cap_db_name
+            DATABASE_URL: postgres://supabase_storage_admin:$$cap_postgres_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
             FILE_SIZE_LIMIT: 52428800
             STORAGE_BACKEND: file
             FILE_STORAGE_BACKEND_PATH: /var/lib/storage
@@ -143,7 +145,7 @@ services:
             REGION: stub
             GLOBAL_S3_BUCKET: stub
             ENABLE_IMAGE_TRANSFORMATION: 'true'
-            IMGPROXY_URL: http://$$cap_appname-imgproxy:5001
+            IMGPROXY_URL: http://srv-captain--$$cap_appname-imgproxy:5001
         volumes:
             - $$cap_appname-storage-data:/var/lib/storage
         depends_on:
@@ -158,7 +160,7 @@ services:
             containerHttpPort: 5001
             notExposeAsWebApp: 'false'
         environment:
-            IMGPROXY_BIND: '5001'
+            IMGPROXY_BIND: ':5001'
             IMGPROXY_LOCAL_FILESYSTEM_ROOT: '/'
             IMGPROXY_USE_ETAG: 'true'
             IMGPROXY_ENABLE_WEBP_DETECTION: $$cap_imgproxy_enable_webp_detection
@@ -175,7 +177,7 @@ services:
             PG_META_DB_HOST: srv-captain--$$cap_appname-db
             PG_META_DB_PORT: 5432
             PG_META_DB_NAME: $$cap_db_name
-            PG_META_DB_USER: supabase_admin
+            PG_META_DB_USER: supabase
             PG_META_DB_PASSWORD: $$cap_postgres_password
         depends_on:
             - $$cap_appname-analytics
@@ -188,10 +190,10 @@ services:
             notExposeAsWebApp: 'true'
         environment:
             JWT_SECRET: $$cap_jwt_secret
-            SUPABASE_URL: http://$$cap_appname-kong:8000
+            SUPABASE_URL: http://srv-captain--$$cap_appname-kong:8000
             SUPABASE_ANON_KEY: $$cap_anon_key
             SUPABASE_SERVICE_ROLE_KEY: $$cap_service_role_key
-            SUPABASE_DB_URL: postgresql://postgres:$$cap_postgres_password@$$cap_appname-db:5432/$$cap_db_name
+            SUPABASE_DB_URL: postgresql://supabase:$$cap_postgres_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
             VERIFY_JWT: $$cap_functions_verify_jwt
         volumes:
             - $$cap_appname-functions-data:/home/deno/functions
@@ -206,7 +208,7 @@ services:
             notExposeAsWebApp: 'true'
         environment:
             LOGFLARE_NODE_HOST: 127.0.0.1
-            DB_USERNAME: supabase_admin
+            DB_USERNAME: supabase
             DB_DATABASE: $$cap_db_name
             DB_HOSTNAME: srv-captain--$$cap_appname-db
             DB_PORT: 5432
@@ -217,7 +219,7 @@ services:
             LOGFLARE_SUPABASE_MODE: 'true'
             LOGFLARE_MIN_CLUSTER_SIZE: 1
             RELEASE_COOKIE: cookie
-            POSTGRES_BACKEND_URL: postgresql://supabase_admin:$$cap_postgres_password@$$cap_appname-db:5432/$$cap_db_name
+            POSTGRES_BACKEND_URL: postgresql://supabase:$$cap_postgres_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
             POSTGRES_BACKEND_SCHEMA: _analytics
             LOGFLARE_FEATURE_FLAG_OVERRIDE: multibackend=true
         depends_on:
@@ -283,19 +285,19 @@ caproverOneClickApp:
         - id: $$cap_supabase_public_url
           label: Supabase Public URL
           description: 'Public URL for the Supabase instance.'
-          defaultValue: 'http://localhost:8000'
+          defaultValue: 'http://$$cap_appname.$$cap_root_domain'
         - id: $$cap_anon_key
           label: Supabase Anon Key
           description: 'Anonymous API key for Supabase.'
-          defaultValue: ''
+          defaultValue: '$$cap_gen_random_hex(32)'
         - id: $$cap_service_role_key
           label: Supabase Service Role Key
           description: 'Service role API key for Supabase.'
-          defaultValue: ''
+          defaultValue: '$$cap_gen_random_hex(32)'
         - id: $$cap_logflare_api_key
           label: Logflare API Key
           description: 'API key for Logflare.'
-          defaultValue: ''
+          defaultValue: '$$cap_gen_random_hex(32)'
 
         # Variables for Kong
         - id: $$cap_dashboard_username
@@ -413,12 +415,4 @@ caproverOneClickApp:
         - id: $$cap_db_name
           label: Database Name
           description: 'Name of the database.'
-          defaultValue: 'supabase'
-
-    instructions:
-        start: 'Starting Supabase services.'
-        end: 'Supabase services are deployed.'
-    displayName: 'Supabase'
-    isOfficial: true
-    description: 'Supabase - The open source Firebase alternative'
-    documentation: 'https://supabase.io/docs'
+          d
