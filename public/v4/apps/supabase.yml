@@ -415,4 +415,16 @@ caproverOneClickApp:
         - id: $$cap_db_name
           label: Database Name
           description: 'Name of the database.'
-          d
+          defaultValue: 'supabase'
+        - id: $$cap_jwt_expiry
+          label: JWT Expiry
+          description: 'JWT expiry in seconds.'
+          defaultValue: '1209600'
+
+    instructions:
+        start: 'Starting Supabase services.'
+        end: 'Supabase services are deployed.'
+    displayName: 'Supabase'
+    isOfficial: true
+    description: 'Supabase - The open source Firebase alternative'
+    documentation: 'https://supabase.io/docs'
