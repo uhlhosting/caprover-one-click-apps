@@ -1,12 +1,8 @@
-name: Validate One Click Apps
+name: Publish One Click Apps
 
 on:
     push:
-        branches:
-            - master
-    pull_request:
-        branches:
-            - master
+        branches: [master]
 
 jobs:
     build:
@@ -15,19 +11,19 @@ jobs:
             matrix:
                 node-version: [14]
         steps:
-            - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+            - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
+              uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
               with:
                   node-version: ${{ matrix.node-version }}
             - name: Cache .pnpm-store
-              uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
+              uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
               with:
                   path: ~/.pnpm-store
                   key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
             - name: Install pnpm
               run: curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
-            - name: Run Validate and Formatter
-              run: pnpm i && pnpm run validate_apps && pnpm run formatter
+            - name: Deploy github page
+              run: pnpm i && pnpm run publish
               env:
-                  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+                  GITHUB_TOKEN: $GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}

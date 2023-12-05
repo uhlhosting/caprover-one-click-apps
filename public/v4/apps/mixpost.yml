@@ -91,7 +91,7 @@ caproverOneClickApp:
           label: MixPost Image Type
           description: Select between Mixpost Enterprise (SaaS), Mixpost Pro (Pro) or Mixpost Free editions.
           defaultValue: inovector/mixpost-enterprise
-          validRegex: /^(inovector\/mixpost-enterprise|inovector\/mixpost-pro|inovector\/mixpost)$/
+          validRegex: /^(inovector\/mixpost-enterprise|inovector\/mixpost-pro|inovector\/mixpost-pro-team|inovector\/mixpost|mixpost-lite)$/
         - id: $$cap_MIXPOST_LICENSE_KEY
           label: Application | License key
           description: Mixpost license key. Check out https://mixpost.app/profile/purchases
