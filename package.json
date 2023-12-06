@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/awesomehubio/caprover-one-click-apps",
   "dependencies": {
-    "fs-extra": "^11.1.1",
-    "gh-pages": "^6.0.0",
-    "prettier": "^3.0.2",
-    "yaml": "^2.3.2"
+    "fs-extra": "^11.2.0",
+    "gh-pages": "^6.1.0",
+    "prettier": "^3.1.0",
+    "yaml": "^2.3.4"
   }
 }
