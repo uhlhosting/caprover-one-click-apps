@@ -19,13 +19,13 @@ function validateV4() {
             throw new Error('All files in v4 must end with .yml')
         }
 
-        for (var i = 0; i < apps.length; i++) {
+        for (let i = 0; i < apps.length; i++) {
             const contentString = fs.readFileSync(
                 path.join(pathOfApps, apps[i]),
                 'utf-8'
             )
             const content = yaml.parse(contentString)
-            const captainVersion = content.captainVersion + ''
+            const captainVersion = content?.captainVersion + ''
             const versionString = version + ''
             if (versionString !== captainVersion) {
                 throw new Error(
@@ -35,40 +35,40 @@ function validateV4() {
 
             apps[i] = apps[i].replace('.yml', '')
 
-            if (!content.caproverOneClickApp) {
+            if (!content?.caproverOneClickApp) {
                 throw new Error(
                     `Cannot find caproverOneClickApp for ${apps[i]}`
                 )
             }
 
-            if (!content.caproverOneClickApp.description) {
+            if (!content?.caproverOneClickApp.description) {
                 throw new Error(`Cannot find description for ${apps[i]}`)
             }
 
-            if (content.caproverOneClickApp.description.length > 200) {
+            if (content?.caproverOneClickApp.description.length > 200) {
                 throw new Error(
                     `Description too long for ${apps[i]}  - keep it below 200 chars`
                 )
             }
 
             if (
-                !content.caproverOneClickApp.instructions ||
-                !content.caproverOneClickApp.instructions.start ||
-                !content.caproverOneClickApp.instructions.end
+                !content?.caproverOneClickApp.instructions ||
+                !content?.caproverOneClickApp.instructions.start ||
+                !content?.caproverOneClickApp.instructions.end
             ) {
                 throw new Error(
                     `Cannot find instructions.start or instructions.end for ${apps[i]}`
                 )
             }
 
-            if (!content.services) {
+            if (!content?.services) {
                 throw new Error(`Cannot find services for ${apps[i]}`)
             }
 
-            Object.keys(content.services).forEach((serviceName) => {
+            Object.keys(content?.services).forEach((serviceName) => {
                 // jshint ignore:line
-                const s = content.services[serviceName]
-                if (s.image && s.image.endsWith(':latest')) {
+                const s = content?.services[serviceName]
+                if (s?.image && s?.image.endsWith(':latest')) {
                     // Added comment to avoid empty block statement
                 }
             })
@@ -112,7 +112,7 @@ function validateV2() {
             throw new Error('All files in v2 must end with .json')
         }
 
-        for (var i = 0; i < apps.length; i++) {
+        for (let i = 0; i < apps.length; i++) {
             const contentString = fs.readFileSync(
                 path.join(pathOfApps, apps[i])
             )
