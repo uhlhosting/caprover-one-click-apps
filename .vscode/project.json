@@ -1,0 +1,7 @@
+{
+    "project": "caprover-one-click-apps",
+    "sonarURL": "https://sonar.uhl.cloud",
+    "auth": {
+        "token": ""
+    }
+}
