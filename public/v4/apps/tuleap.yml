@@ -17,6 +17,7 @@ services:
         caproverExtra:
             containerHttpPort: '80'
             notExposeAsWebApp: 'false'
+            websocketSupport: 'true'
         depends_on:
             - $$cap_appname-cache
             - $$cap_appname-db
