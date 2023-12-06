@@ -68,7 +68,6 @@ function validateV4() {
                 // jshint ignore:line
                 const s = content.services[serviceName]
                 if (s.image && s.image.endsWith(':latest')) {
-                    // throw new Error(`"latest" tag is not allowed as it can change and break the setup, see ${apps[i]}`);
                 }
             })
 
