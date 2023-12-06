@@ -1,71 +1,72 @@
 captainVersion: 4
 services:
-    $$cap_appname-db:
-        image: mariadb:10.11
-        volumes:
-            - $$cap_appname-db-data:/var/lib/mysql
-        restart: always
-        environment:
-            MYSQL_ROOT_PASSWORD: $$cap_db_root_password
-            MYSQL_LOG_CONSOLE: 'true'
-        caproverExtra:
-            notExposeAsWebApp: 'true'
+  $$cap_appname-db:
+    image: mariadb:10.11
+    volumes:
+      - $$cap_appname-db-data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $$cap_db_root_password
+      MYSQL_LOG_CONSOLE: "true"
+    caproverExtra:
+      notExposeAsWebApp: "true"
 
-    $$cap_appname-memcached:
-        image: memcached:1.5.6
-        entrypoint: memcached -m 256
-        restart: always
-        caproverExtra:
-            notExposeAsWebApp: 'true'
+  $$cap_appname-memcached:
+    image: memcached:1.5.6
+    entrypoint: memcached -m 256
+    restart: always
+    caproverExtra:
+      notExposeAsWebApp: "true"
 
-    $$cap_appname-redis:
-        image: redis:5.0.7
-        restart: always
-        caproverExtra:
-            notExposeAsWebApp: 'true'
+  $$cap_appname-redis:
+    image: redis:5.0.7
+    restart: always
+    caproverExtra:
+      notExposeAsWebApp: "true"
 
-    $$cap_appname-seatable:
-        image: seatable/seatable-enterprise:$$cap_seatable_version
-        volumes:
-            - $$cap_appname-seatable-data:/shared
-        environment:
-            DB_HOST: $$cap_appname-db
-            DB_ROOT_PASSWD: $$cap_db_root_password
-            SEATABLE_SERVER_LETSENCRYPT: 'False'
-            SEATABLE_SERVER_HOSTNAME: $$cap_seatable_server_hostname
-            TIME_ZONE: 'Etc/UTC'
-        depends_on:
-            - $$cap_appname-db
-            - $$cap_appname-memcached
-            - $$cap_appname-redis
-        restart: always
-        caproverExtra:
-            containerHttpPort: '80'
-            websocketSupport: 'true'
+  $$cap_appname-seatable:
+    image: seatable/seatable-enterprise:$$cap_seatable_version
+    volumes:
+      - $$cap_appname-seatable-data:/shared
+    environment:
+      DB_HOST: $$cap_appname-db
+      DB_ROOT_PASSWD: $$cap_db_root_password
+      SEATABLE_SERVER_LETSENCRYPT: "False"
+      SEATABLE_SERVER_HOSTNAME: $$cap_seatable_server_hostname
+      TIME_ZONE: "Etc/UTC"
+    depends_on:
+      - $$cap_appname-db
+      - $$cap_appname-memcached
+      - $$cap_appname-redis
+    restart: always
+    caproverExtra:
+      containerHttpPort: "80"
+      websocketSupport: "true"
+      notExposeAsWebApp: "false"
 
 caproverOneClickApp:
-    variables:
-        - id: $$cap_db_root_password
-          label: Database Root Password
-          defaultValue: PASSWORD
-          description: Root password for the MariaDB service.
-          validRegex: /^.{1,}$/
-        - id: $$cap_seatable_version
-          label: SeaTable Version
-          defaultValue: latest
-          description: Check out their Docker page for the valid tags https://hub.docker.com/r/seatable/seatable-enterprise/tags
-          validRegex: /^([^\s^\/])+$/
-        - id: $$cap_seatable_server_hostname
-          label: SeaTable Server Hostname
-          defaultValue: example.seatable.com
-          description: Hostname for the SeaTable server.
-          validRegex: /^([^\s^\/])+$/
-    instructions:
-        start: >-
-            This template deploys a SeaTable enterprise server with MariaDB, Memcached, and Redis. SeaTable is an open-source platform for team collaboration and project management.
-        end: >-
-            SeaTable is deployed and available. Please configure it via the provided hostname.
-    displayName: SeaTable
-    isOfficial: false
-    description: Deploy SeaTable enterprise server with MariaDB, Memcached, and Redis for team collaboration and project management.
-    documentation: For more information, visit https://seatable.io/
+  variables:
+    - id: $$cap_db_root_password
+      label: Database Root Password
+      defaultValue: PASSWORD
+      description: Root password for the MariaDB service.
+      validRegex: /^.{1,}$/
+    - id: $$cap_seatable_version
+      label: SeaTable Version
+      defaultValue: latest
+      description: Check out their Docker page for the valid tags https://hub.docker.com/r/seatable/seatable-enterprise/tags
+      validRegex: /^([^\s^\/])+$/
+    - id: $$cap_seatable_server_hostname
+      label: SeaTable Server Hostname
+      defaultValue: example.seatable.com
+      description: Hostname for the SeaTable server.
+      validRegex: /^([^\s^\/])+$/
+  instructions:
+    start: >-
+      This template deploys a SeaTable enterprise server with MariaDB, Memcached, and Redis. SeaTable is an open-source platform for team collaboration and project management.
+    end: >-
+      SeaTable is deployed and available. Please configure it via the provided hostname.
+  displayName: SeaTable
+  isOfficial: false
+  description: Deploy SeaTable enterprise server with MariaDB, Memcached, and Redis for team collaboration and project management.
+  documentation: For more information, visit https://seatable.io/
