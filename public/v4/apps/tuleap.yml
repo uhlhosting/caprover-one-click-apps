@@ -17,6 +17,9 @@ services:
         caproverExtra:
             containerHttpPort: '80'
             notExposeAsWebApp: 'false'
+        depends_on:
+            - $$cap_appname-cache
+            - $$cap_appname-db
 
     $$cap_appname-db:
         volumes:
