@@ -34,7 +34,7 @@ services:
         caproverExtra:
             notExposeAsWebApp: 'true'
             dockerfileLines:
-                - FROM redis:$$cap_REDIS_VERSION
+                - FROM redis:$$cap_redis
                 - CMD redis-server --appendonly yes --auto-aof-rewrite-percentage 20 --auto-aof-rewrite-min-size 200kb
         volumes:
             - $$cap_appname-cache:/data
@@ -61,6 +61,10 @@ caproverOneClickApp:
           description: Enter the root password for MySQL.
           defaultValue: mysql_root_password
           validRegex: /^.{1,}$/
+        - id: $$cap_redis
+          label: Redis Version
+          description: Select the version of Redis.
+          defaultValue: 6.2.6
     instructions:
         start: Tuleap is an open source tool for project management and collaboration.
         end: Tuleap has been deployed and is available at $$cap_tuleap_fqdn.
