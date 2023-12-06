@@ -27,10 +27,11 @@ function validateV4() {
             const content = yaml.parse(contentString)
             const captainVersion = content.captainVersion + ''
             const versionString = version + ''
-            if (versionString !== captainVersion)
+            if (versionString !== captainVersion) {
                 throw new Error(
                     `unmatched versions   ${versionString}  ${captainVersion} for ${apps[i]}`
                 )
+            }
 
             apps[i] = apps[i].replace('.yml', '')
 
@@ -68,6 +69,7 @@ function validateV4() {
                 // jshint ignore:line
                 const s = content.services[serviceName]
                 if (s.image && s.image.endsWith(':latest')) {
+                    // Added comment to avoid empty block statement
                 }
             })
 
