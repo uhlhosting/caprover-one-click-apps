@@ -6,9 +6,9 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            POSTGRES_USER: plane
+            POSTGRES_USER: $$cap_pguser
             POSTGRES_PASSWORD: $$cap_pgpassword
-            POSTGRES_DB: plane
+            POSTGRES_DB: $$cap_pgdatabase
             POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -57,9 +57,9 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            POSTGRES_USER: plane
+            POSTGRES_USER: $$cap_pguser
             POSTGRES_PASSWORD: $$cap_pgpassword
-            POSTGRES_DB: plane
+            POSTGRES_DB: $$cap_pgdatabase
             POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -111,9 +111,9 @@ services:
             # PGPASSWORD: $$cap_pgpassword
             # PGHOST: srv-captain--$$cap_appname-db
             # PGDATABASE: $$cap_pgdatabase
-            POSTGRES_USER: plane
+            POSTGRES_USER: $$cap_pguser
             POSTGRES_PASSWORD: $$cap_pgpassword
-            POSTGRES_DB: plane
+            POSTGRES_DB: $$cap_pgdatabase
             POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -199,9 +199,9 @@ services:
             - $$cap_appname-db-data:/var/lib/postgresql/data
         restart: always
         environment:
-            POSTGRES_USER: plane
+            POSTGRES_USER: $$cap_pguser
             POSTGRES_PASSWORD: $$cap_pgpassword
-            POSTGRES_DB: plane
+            POSTGRES_DB: $$cap_pgdatabase
         caproverExtra:
             notExposeAsWebApp: 'true'
 
@@ -231,10 +231,10 @@ caproverOneClickApp:
           description: Version of PostgreSQL to use
           defaultValue: '15.2-alpine'
 
-        # - id: $$cap_pguser
-        #   label: PostgreSQL User
-        #   description: Username for PostgreSQL
-        #   defaultValue: 'plane'
+        - id: $$cap_pguser
+          label: PostgreSQL User
+          description: Username for PostgreSQL
+          defaultValue: 'plane'
 
         - id: $$cap_pgpassword
           label: PostgreSQL Password
@@ -242,10 +242,10 @@ caproverOneClickApp:
           validRegex: /^[^\@]{12,}$/
           defaultValue: $$cap_gen_random_hex(12)
 
-        # - id: $$cap_pgdatabase
-        #   label: PostgreSQL Database
-        #   description: Database name for PostgreSQL
-        #   defaultValue: 'plane'
+        - id: $$cap_pgdatabase
+          label: PostgreSQL Database
+          description: Database name for PostgreSQL
+          defaultValue: 'plane'
 
         # - id: $$cap_postgres_data
         #   label: PostgreSQL Data Volume
