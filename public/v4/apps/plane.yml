@@ -202,7 +202,7 @@ services:
             notExposeAsWebApp: 'true'
             dockerfileLines:
                 - FROM postgres:$$cap_postgres_version
-                - CMD sudo postgres -c max_connections=200
+                - CMD ["-c", "max_connections=200"]
 
 caproverOneClickApp:
     displayName: Plane
