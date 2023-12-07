@@ -10,7 +10,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
+            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -48,7 +48,6 @@ services:
             - $$cap_appname-redis
         caproverExtra:
             containerHttpPort: '8000'
-            notExposeAsWebApp: 'false'
             websocketSupport: 'true'
 
     $$cap_appname-worker:
@@ -61,7 +60,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
+            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -110,7 +109,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
+            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -161,7 +160,7 @@ services:
             - $$cap_appname-worker
         caproverExtra:
             containerHttpPort: '3000'
-            notExposeAsWebApp: 'false'
+            websocketSupport: 'true'
 
     $$cap_appname-space:
         image: makeplane/plane-space:latest
@@ -175,7 +174,6 @@ services:
             - $$cap_appname
         caproverExtra:
             containerHttpPort: '3000'
-            notExposeAsWebApp: 'false'
             websocketSupport: 'true'
 
     $$cap_appname-redis:
@@ -193,10 +191,10 @@ services:
         volumes:
             - $$cap_appname-pgdata:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: $$cap_postgres_user
-            POSTGRES_PASSWORD: $$cap_postgres_password
-            POSTGRES_DB: $$cap_postgres_db
-            PGDATA: /var/lib/postgresql/data
+            PGUSER: $$cap_postgres_user
+            PGPASSWORD: $$cap_postgres_password
+            PGDATABASE: $$cap_postgres_db
+            PGDATA: $$cap_postgres_data
         caproverExtra:
             notExposeAsWebApp: 'true'
 
@@ -231,37 +229,6 @@ caproverOneClickApp:
           description: Version of PostgreSQL to use
           defaultValue: '15.2-alpine'
 
-        - id: $$cap_postgres_user
-          label: PostgreSQL Username
-          defaultValue: plane
-
-        - id: $$cap_postgres_password
-          label: PostgreSQL Password
-          defaultValue: plane
-
-        - id: $$cap_postgres_db
-          label: PostgreSQL Database Name
-          defaultValue: plane
-
-        - id: $$cap_appname-pgdata
-          label: PostgreSQL Data Volume
-          defaultValue: pgdata
-        # API
-        - id: $$cap_debug
-          label: Debug Mode
-          description: Enable or disable debug mode (0 or 1)
-          defaultValue: '0'
-
-        - id: $$cap_django_settings_module
-          label: Django Settings Module
-          description: Django settings module path
-          defaultValue: 'plane.settings.selfhosted'
-
-        - id: $$cap_sentry_dsn
-          label: Sentry DSN
-          description: Sentry DSN for error logging
-          defaultValue: ''
-
         - id: $$cap_pguser
           label: PostgreSQL User
           description: Username for PostgreSQL
@@ -278,15 +245,36 @@ caproverOneClickApp:
           description: Database name for PostgreSQL
           defaultValue: 'plane'
 
+        - id: $$cap_appname-pgdata
+          label: PostgreSQL Data Volume
+          description: Data volume for PostgreSQL
+          defaultValue: '$$cap_appname-pgdata'
+
+        # API
+        - id: $$cap_debug
+          label: Debug Mode
+          description: Enable or disable debug mode (0 or 1)
+          defaultValue: '1'
+
+        - id: $$cap_django_settings_module
+          label: Django Settings Module
+          description: Django settings module path
+          defaultValue: 'plane.settings.selfhosted'
+
+        - id: $$cap_sentry_dsn
+          label: Sentry DSN
+          description: Sentry DSN for error logging
+          defaultValue: ''
+
         - id: $$cap_email_host
           label: Email Host
           description: Host for email sending
-          defaultValue: ''
+          defaultValue: 'post.uhlhosting.ch'
 
         - id: $$cap_email_host_user
           label: Email Host User
           description: Username for email host
-          defaultValue: 'user@domain.com'
+          defaultValue: ''
 
         - id: $$cap_email_host_password
           label: Email Host Password
@@ -296,7 +284,7 @@ caproverOneClickApp:
         - id: $$cap_email_port
           label: Email Port
           description: Port for email service
-          defaultValue: '587'
+          defaultValue: '25'
 
         - id: $$cap_email_from
           label: Email From Address
@@ -316,30 +304,28 @@ caproverOneClickApp:
         - id: $$cap_aws_access_key_id
           label: AWS Access Key ID
           description: AWS Access Key ID for S3 and other services
-          validRegex: /^[^\@]{12,}$/
-          defaultValue: $$cap_gen_random_hex(12)
+          defaultValue: ''
 
         - id: $$cap_aws_secret_access_key
           label: AWS Secret Access Key
           description: AWS Secret Access Key for S3 and other services
-          validRegex: /^[^\@]{12,}$/
-          defaultValue: $$cap_gen_random_hex(12)
+          defaultValue: ''
 
         # ... and other shared variables as needed
         - id: $$cap_aws_region
           label: AWS Region
           description: AWS region for services like S3
-          defaultValue: ''
+          defaultValue: 'eu-ovh'
 
         - id: $$cap_aws_s3_endpoint_url
           label: AWS S3 Endpoint URL
           description: Endpoint URL for AWS S3 services
-          defaultValue: 'http://plane-minio:9000'
+          defaultValue: 'https://s3-api.uhl.cloud'
 
         - id: $$cap_aws_s3_bucket_name
           label: AWS S3 Bucket Name
           description: Bucket name for AWS S3
-          defaultValue: 'uploads'
+          defaultValue: 'plane'
 
         - id: $$cap_file_size_limit
           label: File Size Limit
@@ -355,7 +341,6 @@ caproverOneClickApp:
           label: OpenAI API Key
           description: API key for accessing OpenAI services
           defaultValue: ''
-          validRegex: /^.{0,}$/
 
         - id: $$cap_gpt_engine
           label: GPT Engine
@@ -366,23 +351,17 @@ caproverOneClickApp:
           label: GitHub Client Secret
           description: Client secret for GitHub OAuth
           defaultValue: ''
-          validRegex: /^.{0,}$/
-
-        - id: $$cap_nginx_port
-          label: Nginx Port
-          description: Port number for Nginx
-          defaultValue: '80'
 
         - id: $$cap_default_email
-          label: Default Email
+          label: Default Login Email
           description: Default email address for the application
           defaultValue: 'captain@plane.so'
 
         - id: $$cap_default_password
-          label: Default Password
+          label: Default Login Password
           description: Default password for the application
           validRegex: /^[^\@]{12,}$/
-          defaultValue: $$cap_gen_random_hex(12)
+          defaultValue: '$$cap_gen_random_hex(12)'
 
         - id: $$cap_enable_signup
           label: Enable Signup
@@ -397,18 +376,18 @@ caproverOneClickApp:
         - id: $$cap_enable_magic_link_login
           label: Enable Magic Link Login
           description: Enable or disable magic link login feature (1 for enable, 0 for disable)
-          defaultValue: '0'
+          defaultValue: '1'
 
         - id: $$cap_secret_key
           label: Secret Key
           description: Secret key for the application
           validRegex: /^[^\@]{12,}$/
-          defaultValue: $$cap_gen_random_hex(24)
+          defaultValue: $$cap_gen_random_hex(64)
 
         - id: $$cap_use_minio
           label: Use Minio
           description: Use Minio for file storage (1 for yes, 0 for no)
-          defaultValue: '0'
+          defaultValue: '1'
         # WEB
         - id: $$cap_next_public_enable_oauth
           label: Enable OAuth
@@ -418,4 +397,4 @@ caproverOneClickApp:
         - id: $$cap_next_public_deploy_url
           label: Deploy URL
           description: URL where the app is deployed
-          defaultValue: 'https://$$cap_appname.$$cap_root_domain'
+          defaultValue: $$cap_appname.$$cap_root_domain
