@@ -8,7 +8,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
+            PGHOST: srv-captain--$$cap_appname-db
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -59,7 +59,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
+            PGHOST: srv-captain--$$cap_appname-db
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -109,7 +109,7 @@ services:
             SENTRY_DSN: $$cap_sentry_dsn
             PGUSER: $$cap_pguser
             PGPASSWORD: $$cap_pgpassword
-            PGHOST: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
+            PGHOST: srv-captain--$$cap_appname-db
             PGDATABASE: $$cap_pgdatabase
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
@@ -202,7 +202,7 @@ services:
             notExposeAsWebApp: 'true'
             dockerfileLines:
                 - FROM postgres:$$cap_postgres_version
-                - CMD postgres -c 'max_connections=1000'
+                - CMD sudo postgres -c max_connections=200
 
 caproverOneClickApp:
     displayName: Plane
