@@ -219,11 +219,6 @@ caproverOneClickApp:
             If you enabled HTTPS, be sure to adjust the necessary environment variables to reflect the secure URL.
     variables:
         # Define necessary variables here based on Plane's configuration requirements.
-        - id: $$cap_appname
-          label: Application Name
-          description: The name for your Plane application. This will be used in the URL.
-          defaultValue: project
-          validRegex: /^[a-z0-9-]+$/i
         # Redis
         - id: $$cap_redis_version
           label: Redis Version
