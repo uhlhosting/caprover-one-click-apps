@@ -6,10 +6,10 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            PGUSER: $$cap_pguser
-            PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
-            PGDATABASE: $$cap_pgdatabase
+            POSTGRES_USER: plane
+            POSTGRES_PASSWORD: $$cap_pgpassword
+            POSTGRES_DB: plane
+            POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
@@ -57,10 +57,10 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            PGUSER: $$cap_pguser
-            PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
-            PGDATABASE: $$cap_pgdatabase
+            POSTGRES_USER: plane
+            POSTGRES_PASSWORD: $$cap_pgpassword
+            POSTGRES_DB: plane
+            POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
@@ -107,10 +107,14 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            PGUSER: $$cap_pguser
-            PGPASSWORD: $$cap_pgpassword
-            PGHOST: srv-captain--$$cap_appname-db
-            PGDATABASE: $$cap_pgdatabase
+            # PGUSER: $$cap_pguser
+            # PGPASSWORD: $$cap_pgpassword
+            # PGHOST: srv-captain--$$cap_appname-db
+            # PGDATABASE: $$cap_pgdatabase
+            POSTGRES_USER: plane
+            POSTGRES_PASSWORD: $$cap_pgpassword
+            POSTGRES_DB: plane
+            POSTGRES_HOST: srv-captain--$$cap_appname-db
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
@@ -190,19 +194,16 @@ services:
             notExposeAsWebApp: 'true'
 
     $$cap_appname-db:
-        restart: always
+        image: postgres:$$cap_postgres_version
         volumes:
             - $$cap_appname-db-data:/var/lib/postgresql/data
+        restart: always
         environment:
-            PGUSER: $$cap_pguser
-            PGPASSWORD: $$cap_pgpassword
-            PGDATABASE: $$cap_pgdatabase
-            PGDATA: $$cap_postgres_data
+            POSTGRES_USER: plane
+            POSTGRES_PASSWORD: $$cap_pgpassword
+            POSTGRES_DB: plane
         caproverExtra:
             notExposeAsWebApp: 'true'
-            dockerfileLines:
-                - FROM postgres:$$cap_postgres_version
-                - CMD ["-c", "max_connections=200"]
 
 caproverOneClickApp:
     displayName: Plane
@@ -230,26 +231,26 @@ caproverOneClickApp:
           description: Version of PostgreSQL to use
           defaultValue: '15.2-alpine'
 
-        - id: $$cap_pguser
-          label: PostgreSQL User
-          description: Username for PostgreSQL
-          defaultValue: 'plane'
+        # - id: $$cap_pguser
+        #   label: PostgreSQL User
+        #   description: Username for PostgreSQL
+        #   defaultValue: 'plane'
 
-        - id: $$cap_pgpassword
-          label: PostgreSQL Password
-          description: Password for PostgreSQL
-          validRegex: /^[^\@]{12,}$/
-          defaultValue: $$cap_gen_random_hex(12)
+        # - id: $$cap_pgpassword
+        #   label: PostgreSQL Password
+        #   description: Password for PostgreSQL
+        #   validRegex: /^[^\@]{12,}$/
+        #   defaultValue: $$cap_gen_random_hex(12)
 
-        - id: $$cap_pgdatabase
-          label: PostgreSQL Database
-          description: Database name for PostgreSQL
-          defaultValue: 'plane'
+        # - id: $$cap_pgdatabase
+        #   label: PostgreSQL Database
+        #   description: Database name for PostgreSQL
+        #   defaultValue: 'plane'
 
-        - id: $$cap_postgres_data
-          label: PostgreSQL Data Volume
-          description: Data volume for PostgreSQL
-          defaultValue: '/var/lib/postgresql/data'
+        # - id: $$cap_postgres_data
+        #   label: PostgreSQL Data Volume
+        #   description: Data volume for PostgreSQL
+        #   defaultValue: '/var/lib/postgresql/data'
 
         # API
         - id: $$cap_debug
