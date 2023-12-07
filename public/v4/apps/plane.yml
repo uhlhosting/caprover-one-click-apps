@@ -236,11 +236,11 @@ caproverOneClickApp:
         #   description: Username for PostgreSQL
         #   defaultValue: 'plane'
 
-        # - id: $$cap_pgpassword
-        #   label: PostgreSQL Password
-        #   description: Password for PostgreSQL
-        #   validRegex: /^[^\@]{12,}$/
-        #   defaultValue: $$cap_gen_random_hex(12)
+        - id: $$cap_pgpassword
+          label: PostgreSQL Password
+          description: Password for PostgreSQL
+          validRegex: /^[^\@]{12,}$/
+          defaultValue: $$cap_gen_random_hex(12)
 
         # - id: $$cap_pgdatabase
         #   label: PostgreSQL Database
