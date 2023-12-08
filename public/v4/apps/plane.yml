@@ -13,7 +13,7 @@ services:
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
-            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379/
+            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379
             EMAIL_HOST: $$cap_email_host
             EMAIL_HOST_USER: $$cap_email_host_user
             EMAIL_HOST_PASSWORD: $$cap_email_host_password
@@ -33,7 +33,6 @@ services:
             GITHUB_CLIENT_SECRET: $$cap_github_client_secret
             DOCKERIZED: '1'
             USE_MINIO: $$cap_use_minio
-            NGINX_PORT: $$cap_nginx_port
             DEFAULT_EMAIL: $$cap_default_email
             DEFAULT_PASSWORD: $$cap_default_password
             ENABLE_SIGNUP: $$cap_enable_signup
@@ -64,7 +63,7 @@ services:
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
-            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379/
+            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379
             EMAIL_HOST: $$cap_email_host
             EMAIL_HOST_USER: $$cap_email_host_user
             EMAIL_HOST_PASSWORD: $$cap_email_host_password
@@ -84,7 +83,6 @@ services:
             GITHUB_CLIENT_SECRET: $$cap_github_client_secret
             DOCKERIZED: '1'
             USE_MINIO: $$cap_use_minio
-            NGINX_PORT: $$cap_nginx_port
             DEFAULT_EMAIL: $$cap_default_email
             DEFAULT_PASSWORD: $$cap_default_password
             ENABLE_SIGNUP: $$cap_enable_signup
@@ -107,10 +105,6 @@ services:
             DEBUG: $$cap_debug
             DJANGO_SETTINGS_MODULE: $$cap_django_settings_module
             SENTRY_DSN: $$cap_sentry_dsn
-            # PGUSER: $$cap_pguser
-            # PGPASSWORD: $$cap_pgpassword
-            # PGHOST: srv-captain--$$cap_appname-db
-            # PGDATABASE: $$cap_pgdatabase
             POSTGRES_USER: $$cap_pguser
             POSTGRES_PASSWORD: $$cap_pgpassword
             POSTGRES_DB: $$cap_pgdatabase
@@ -118,7 +112,7 @@ services:
             DATABASE_URL: postgresql://$$cap_pguser:$$cap_pgpassword@srv-captain--$$cap_appname-db:5432/$$cap_pgdatabase
             REDIS_HOST: srv-captain--$$cap_appname-redis
             REDIS_PORT: '6379'
-            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379/
+            REDIS_URL: redis://srv-captain--$$cap_appname-redis:6379
             EMAIL_HOST: $$cap_email_host
             EMAIL_HOST_USER: $$cap_email_host_user
             EMAIL_HOST_PASSWORD: $$cap_email_host_password
@@ -138,7 +132,6 @@ services:
             GITHUB_CLIENT_SECRET: $$cap_github_client_secret
             DOCKERIZED: '1'
             USE_MINIO: $$cap_use_minio
-            NGINX_PORT: $$cap_nginx_port
             DEFAULT_EMAIL: $$cap_default_email
             DEFAULT_PASSWORD: $$cap_default_password
             ENABLE_SIGNUP: $$cap_enable_signup
