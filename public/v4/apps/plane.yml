@@ -207,10 +207,23 @@ caproverOneClickApp:
         start: |-
             Plane provides a seamless and intuitive way to manage projects, communicate with your team, and streamline workflows, all from a self-hosted platform. It’s an ideal solution for teams looking for an open-source and privacy-focused alternative to mainstream communication tools.
         end: |-
-            Plane has been successfully deployed! It might take a few moments before it's fully started.
-            You can access the Plane application at `http://$$cap_appname.$$cap_root_domain`.
-            Refer to the Plane documentation for initial setup and configuration details.
-            If you enabled HTTPS, be sure to adjust the necessary environment variables to reflect the secure URL.
+            ✅  Plane has been deployed!
+            --------------------------------------------
+            _Plane has been successfully deployed! Follow the steps below before accessing https://$$cap_appname.$$cap_root_domain._
+
+            --------------------------------------------
+            ❗️ **IMPORTANT**: Before using Plane, ensure the following:
+
+            **Step 1**: Adjust settings for `$$cap_appname`.
+            **Step 2**: Enable **HTTPS** for secure access.
+            **Step 3**: Consider enabling **Websocket Support** if necessary.
+
+            🌐 After completing these steps, Plane can be accessed at:
+
+            **Plane Interface**: https://$$cap_appname.$$cap_root_domain
+
+            --------------------------------------------
+            🔰 For more details on setup and configuration, refer to the Plane documentation.
     variables:
         # Define necessary variables here based on Plane's configuration requirements.
         # Redis
@@ -239,11 +252,6 @@ caproverOneClickApp:
           label: PostgreSQL Database
           description: Database name for PostgreSQL
           defaultValue: 'plane'
-
-        # - id: $$cap_postgres_data
-        #   label: PostgreSQL Data Volume
-        #   description: Data volume for PostgreSQL
-        #   defaultValue: '/var/lib/postgresql/data'
 
         # API
         - id: $$cap_debug
@@ -338,8 +346,8 @@ caproverOneClickApp:
 
         - id: $$cap_gpt_engine
           label: GPT Engine
-          description: GPT engine version (e.g., gpt-4-32k-0314)
-          defaultValue: 'gpt-4-32k-0314'
+          description: GPT engine version (e.g., gpt-4)
+          defaultValue: 'gpt-4'
 
         - id: $$cap_github_client_secret
           label: GitHub Client Secret
