@@ -1,11 +1,6 @@
 captainVersion: 4
 services:
     $$cap_appname-db:
-        image: mariadb:10.5
-        command:
-            - 'mysqld'
-            - '--character-set-server=utf8mb4'
-            - '--collation-server=utf8mb4_unicode_ci'
         volumes:
             - $$cap_appname-db-data:/var/lib/mysql
         environment:
@@ -14,13 +9,16 @@ services:
             MYSQL_USER: $$cap_mysql_user
             MYSQL_PASSWORD: $$cap_mysql_password
         restart: always
+        caproverExtra:
+            dockerfileLines:
+                - FROM mariadb:latest
+                - CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
 
     $$cap_appname-redis:
-        image: redis:4.0-alpine
+        image: redis:latest
         restart: always
 
     $$cap_appname:
-        image: anonaddy/anonaddy:latest
         depends_on:
             - $$cap_appname-db
             - $$cap_appname-redis
@@ -40,8 +38,6 @@ services:
             containerHttpPort: '8000'
             dockerfileLines:
                 - FROM anonaddy/anonaddy:latest
-                - ENTRYPOINT ["sh"]
-                - CMD ["-c", "mkdir -p data1/repositories; mkdir -p data2/tasks; mkdir -p setup_state; if [ -f /srv/scanmycode/setup_state/setup_done ]; then curl --silent --output /dev/null https://dl.betterscan.io/run-dockerhub.html; python3.8 /srv/scanmycode/manage.py runserver; else python3.8 /srv/scanmycode/manage.py setup  && touch /srv/scanmycode/setup_state/setup_done; curl --silent --output /dev/null https://dl.betterscan.io/installation-dockerhub.html; fi"]
 
 caproverOneClickApp:
     variables:
