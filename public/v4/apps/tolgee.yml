@@ -37,7 +37,7 @@ services:
             POSTGRES_USER: tolgee
             POSTGRES_PASSWORD: $$cap_db_password
         volumes:
-            - $$cap_appname-data:/var/lib/postgresql/data
+            - $$cap_appname-db-data:/var/lib/postgresql/data
         caproverExtra:
             notExposeAsWebApp: 'true'
 caproverOneClickApp:
