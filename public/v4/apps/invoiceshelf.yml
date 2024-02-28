@@ -32,7 +32,7 @@ services:
             DB_CONNECTION: mysql
             DB_DATABASE: invoiceshelf
             DB_HOST: srv-captain--$$cap_appname-db
-            DB_PASSWORD: '$$cap_invoiceshelf_db_password'
+            DB_PASSWORD: '$$cap_DB_PASSWORD'
             DB_PORT: 3306
             DB_USERNAME: invoiceshelf
             MAIL_DRIVER: smtp
@@ -85,7 +85,7 @@ caproverOneClickApp:
           description: 'Username for the MySQL database.'
         - id: $$cap_DB_PASSWORD
           label: Database Password
-          defaultValue: ''
+          defaultValue: $$cap_gen_random_hex(16)
           description: 'Password for the MySQL database.'
         - id: $$cap_DB_DATABASE
           label: Database Name
@@ -93,12 +93,8 @@ caproverOneClickApp:
           description: 'Name of the MySQL database.'
         - id: $$cap_DB_ROOT_PASSWORD
           label: MySQL Root Password
-          defaultValue: ''
+          defaultValue: $$cap_gen_random_hex(16)
           description: 'Root password for the MySQL database.'
-        - id: $$cap_invoiceshelf_db_password
-          label: Invoiceshelf Database Password
-          defaultValue: ''
-          description: 'Password for the invoiceshelf database user.'
         - id: $$cap_admin_user
           label: Admin Username
           defaultValue: admin
@@ -109,7 +105,7 @@ caproverOneClickApp:
           description: 'Password for the admin user.'
         - id: $$cap_startup_delay
           label: Startup Delay
-          defaultValue: 30
+          defaultValue: 60
           description: 'Delay in seconds before starting the application.'
 
 instructions:
