@@ -26,8 +26,6 @@ services:
         volumes:
             - $$cap_appname-data:/data
         environment:
-            ADMIN_PASSWORD: '$$cap_admin_password'
-            ADMIN_USER: $$cap_admin_user
             APP_URL: https://$$cap_appname.$$cap_root_domain
             DB_CONNECTION: mysql
             DB_DATABASE: invoiceshelf

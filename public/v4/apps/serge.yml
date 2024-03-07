@@ -9,14 +9,11 @@ services:
             - '/etc/localtime:/etc/localtime:ro'
         caproverExtra:
             containerHttpPort: '8008'
-    volumes:
-        $$cap_appname-db:
-        $$cap_appname-weights:
 caproverOneClickApp:
     variables:
         - id: '$$cap_myapp_version'
           label: Serge version
-          defaultValue: '0.4.0'
+          defaultValue: '0.9.0'
           description: Check out their GitHub page for the valid tags https://github.com/nsarrazin/serge/pkgs/container/serge
           validRegex: '/.{1,}/'
     instructions:
