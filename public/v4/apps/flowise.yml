@@ -2,26 +2,25 @@
 captainVersion: 4
 services:
     $$cap_appname:
-        restart: always
+        restartPolicy: never
         environment:
             PORT: 3000
-            FLOWISE_USERNAME: $$cap_flowise_username
-            FLOWISE_PASSWORD: $$cap_flowise_password
-            #DATABASE_PATH: /root/.flowise
             APIKEY_PATH: /root/.flowise
-            SECRETKEY_PATH: /root/.flowise
-            LOG_PATH: /root/.flowise/logs
-            TOOL_FUNCTION_BUILTIN_DEP: crypto,fs
-            TOOL_FUNCTION_EXTERNAL_DEP: moment,lodash
-            DATABASE_PATH: $$cap_database_path
-            DATABASE_TYPE: $$cap_database_type
-            DATABASE_PORT: $$cap_database_port
             DATABASE_HOST: srv-captain--$$cap_appname-db
             DATABASE_NAME: $$cap_database_name
-            DATABASE_USER: $$cap_database_user
             DATABASE_PASSWORD: $$cap_database_password
+            DATABASE_PATH: /root/.flowise
+            DATABASE_PORT: $$cap_database_port
+            DATABASE_TYPE: $$cap_database_type
+            DATABASE_USER: $$cap_database_user
+            FLOWISE_PASSWORD: $$cap_flowise_password
             FLOWISE_SECRETKEY_OVERWRITE: $$cap_flowise_secretkey_overwrite
+            FLOWISE_USERNAME: $$cap_flowise_username
             LOG_LEVEL: $$cap_log_level
+            LOG_PATH: /root/.flowise/logs
+            SECRETKEY_PATH: /root/.flowise
+            TOOL_FUNCTION_BUILTIN_DEP: '*'
+            TOOL_FUNCTION_EXTERNAL_DEP: '*'
         caproverExtra:
             containerHttpPort: 3000
             websocketSupport: 'true'
@@ -33,10 +32,9 @@ services:
         depends_on:
             - $$cap_appname-db
     $$cap_appname-db:
-        image: postgres
+        image: ankane/pgvector
         volumes:
             - $$cap_appname-db-data:/var/lib/postgresql/data
-        restart: always
         environment:
             POSTGRES_USER: $$cap_database_user
             POSTGRES_PASSWORD: $$cap_database_password
@@ -56,7 +54,7 @@ caproverOneClickApp:
     variables:
         - id: $$cap_flowise_version
           label: Flowise version
-          defaultValue: '1.4.1'
+          defaultValue: '1.6.1'
           description: Checkout their docker page for the valid tags https://hub.docker.com/r/flowiseai/flowise/tags
           validRegex: /^([^\s^\/])+$/
 
