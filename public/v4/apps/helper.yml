@@ -74,7 +74,7 @@ caproverOneClickApp:
             This template sets up a MySQL database and a custom helper application. Ensure you have the correct database and mail configuration before proceeding.
         end: >-
             Your applications are now deployed. Please check the application dashboard for more details.
-    displayName: Custom Application with MySQL Database
-    isOfficial: false
+    displayName: Helper
+    isOfficial: true
     description: This template deploys a custom application alongside a MySQL database, with integrated mail support.
     documentation: Please refer to the official Docker images for MySQL and your application for further configuration options and best practices.
