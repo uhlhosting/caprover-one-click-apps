@@ -14,7 +14,7 @@ services:
             containerHttpPort: '3306'
             notExposeAsWebApp: true
 
-    $$cap_appname-helper:
+    $$cap_appname:
         image: eloufirhatim/helper:$$cap_helper_version
         volumes:
             - /etc/localtime:/etc/localtime
