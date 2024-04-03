@@ -109,7 +109,7 @@ caproverOneClickApp:
         - id: $$cap_MIXPOST_APP_NAME
           label: Application | Name
           description: Name of the application.
-          defaultValue: UHLCrossPost
+          defaultValue: Mixpost
           validRegex: /.{1,}/
         - id: $$cap_MIXPOST_APP_KEY
           label: Application | Key
