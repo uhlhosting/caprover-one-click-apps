@@ -13,7 +13,6 @@ services:
             notExposeAsWebApp: 'true'
             dockerfileLines:
                 - FROM mariadb:$$cap_mariadb_version
-                - CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
 
     $$cap_appname-redis:
         image: redis:$$cap_redis_version
