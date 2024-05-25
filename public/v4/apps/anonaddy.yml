@@ -10,13 +10,16 @@ services:
             MYSQL_PASSWORD: $$cap_mysql_password
         restart: always
         caproverExtra:
+            notExposeAsWebApp: 'true'
             dockerfileLines:
-                - FROM mariadb:latest
+                - FROM mariadb:$$cap_mariadb_version
                 - CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
 
     $$cap_appname-redis:
-        image: redis:latest
+        image: redis:$$cap_redis_version
         restart: always
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 
     $$cap_appname:
         depends_on:
@@ -37,7 +40,7 @@ services:
         caproverExtra:
             containerHttpPort: '8000'
             dockerfileLines:
-                - FROM anonaddy/anonaddy:latest
+                - FROM anonaddy/anonaddy:$$cap_anonaddy_version
 
 caproverOneClickApp:
     variables:
@@ -56,9 +59,18 @@ caproverOneClickApp:
         - id: $$cap_appname-db-data
           label: 💾 Database Data Volume
           defaultValue: 'db-data'
+        - id: $$cap_anonaddy_version
+          label: 🛠️ AnonAddy Version
+          defaultValue: 'latest'
+        - id: $$cap_redis_version
+          label: 🛠️ Redis Version
+          defaultValue: 'latest'
+        - id: $$cap_mariadb_version
+          label: 🛠️ MariaDB Version
+          defaultValue: 'latest'
 
     instructions:
-        start: '🚀 Addy is a tool for [describe functionality].'
+        start: '🚀 Addy is a tool for mail manipulation and routing.'
         end: '✅ Addy has been successfully deployed and can be accessed at `http://$$cap_appname.$$cap_root_domain`.'
 
     displayName: 'Addy'
