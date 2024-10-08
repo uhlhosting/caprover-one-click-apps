@@ -25,7 +25,7 @@ services:
                 - FROM quay.io/keycloak/keycloak:$$cap_keycloak_version as builder
                 - ENV KC_HEALTH_ENABLED=true
                 - ENV KC_METRICS_ENABLED=false
-                - ENV KC_FEATURES=token-exchange,recovery-codes
+                - ENV KC_FEATURES=token-exchange,recovery-codes,docker,preview
                 - ENV KC_DB=postgres
                 - RUN /opt/keycloak/bin/kc.sh build
 
