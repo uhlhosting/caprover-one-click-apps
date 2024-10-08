@@ -16,8 +16,8 @@ services:
             - $$cap_appname-db
         restart: always
         environment:
-            KEYCLOAK_ADMIN: $$cap_keycloak_admin
-            KEYCLOAK_ADMIN_PASSWORD: $$cap_keycloak_password
+            KC_BOOTSTRAP_ADMIN_USERNAME: $$cap_keycloak_admin
+            KC_BOOTSTRAP_ADMIN_PASSWORD: $$cap_keycloak_password
             KC_DB_PASSWORD: $$cap_pg_pass
         caproverExtra:
             containerHttpPort: '8080'
