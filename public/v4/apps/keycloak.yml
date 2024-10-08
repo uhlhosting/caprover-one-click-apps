@@ -36,7 +36,7 @@ services:
                 - ENV KC_DB_USERNAME=keycloak
                 - ENV KC_DB_PASSWORD=$$cap_pg_pass
                 - ENV KC_HOSTNAME=$$cap_appname.$$cap_root_domain
-                - ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--optimized", "--proxy-headers=forwarded", "--http-enabled=true"]
+                - ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--optimized", "--proxy-headers=xforwarded", "--http-enabled=true"]
 
 caproverOneClickApp:
     variables:
