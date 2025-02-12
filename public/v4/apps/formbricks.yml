@@ -2,7 +2,7 @@ captainVersion: 4
 
 services:
     $$cap_appname-db:
-        image: pgvector/pgvector:$$cap_postgres_version
+        image: pgvector/pgvector:pg17
         volumes:
             - '$$cap_appname-db-data:/var/lib/postgresql/data'
         restart: unless-stopped
@@ -39,9 +39,9 @@ services:
 
 caproverOneClickApp:
     variables:
-        - id: $$cap_postgres_version
-          label: Postgres Version
-          defaultValue: pg15
+        # - id: $$cap_postgres_version
+        #   label: Postgres Version
+        #   defaultValue: pg17
         - id: $$cap_postgres_db
           label: Postgres DB
           defaultValue: formbricks
