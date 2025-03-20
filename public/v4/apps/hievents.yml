@@ -1,17 +1,18 @@
 captainVersion: 4
 services:
-    hi-events-frontend:
+    $$cap_appname:
         image: daveearley/hi.events-frontend
         environment:
-            VITE_FRONTEND_URL: $$cap_frontend_url
-            VITE_API_URL_CLIENT: $$cap_api_url_client
-            VITE_API_URL_SERVER: $$cap_api_url_server
+            VITE_FRONTEND_URL: https://$$cap_appname.$$cap_root_domain
+            VITE_API_URL_CLIENT: https://$$cap_appname-backend.$$cap_root_domain/api
+            VITE_API_URL_SERVER: http://$$cap_appname-backend.$$cap_root_domain/api
             VITE_STRIPE_PUBLISHABLE_KEY: $$cap_stripe_publishable_key
         caproverExtra:
-            containerHttpPort: '80'
+            containerHttpPort: '5678'
+            websocketSupport: 'true'
         restart: always
 
-    hi-events-backend:
+    $$cap_appname-backend:
         image: daveearley/hi.events-backend
         environment:
             # Mail Configuration
@@ -22,6 +23,7 @@ services:
             MAIL_PASSWORD: $$cap_mail_password
             MAIL_FROM_ADDRESS: $$cap_mail_from_address
             MAIL_FROM_NAME: $$cap_mail_from_name
+            MAIL_ENCRYPTION: $$cap_mail_encryption
 
             # Stripe Configuration
             STRIPE_PUBLIC_KEY: $$cap_stripe_public_key
@@ -32,7 +34,7 @@ services:
             APP_KEY: $$cap_app_key
             APP_SAAS_MODE_ENABLED: $$cap_app_saas_mode_enabled
             APP_SAAS_STRIPE_APPLICATION_FEE_PERCENT: $$cap_app_saas_stripe_application_fee_percent
-            APP_FRONTEND_URL: $$cap_app_frontend_url
+            APP_FRONTEND_URL: https://$$cap_appname.$$cap_root_domain
             APP_CDN_URL: $$cap_app_cdn_url
             APP_DISABLE_REGISTRATION: $$cap_app_disable_registration
             FILESYSTEM_PUBLIC_DISK: $$cap_filesystem_public_disk
@@ -53,65 +55,68 @@ services:
             DB_PORT: '5432'
             DB_DATABASE: 'hi_events_db'
             DB_USERNAME: 'hi_events_user'
-            DB_PASSWORD: 'hi_events_password'
-            DATABASE_URL: 'postgres://hi_events_user:hi_events_password@srv-captain--hi-events-db:5432/hi_events_db'
+            DB_PASSWORD: '$$cap_DB_PASSWORD'
+            DATABASE_URL: 'postgres://hi_events_user:$$cap_DB_PASSWORD@srv-captain--hi-events-db:5432/hi_events_db'
 
             # Redis Configuration (Hardcoded)
             REDIS_HOST: 'srv-captain--hi-events-redis'
             REDIS_USER: 'default'
-            REDIS_PASSWORD: 'redis_password'
+            REDIS_PASSWORD: '$$cap_REDIS_PASSWORD'
             REDIS_PORT: '6379'
-            REDIS_URL: 'redis://default:redis_password@srv-captain--hi-events-redis:6379'
+            REDIS_URL: 'redis://default:$$cap_REDIS_PASSWORD@srv-captain--hi-events-redis:6379'
 
             # Queue Configuration
             QUEUE_CONNECTION: $$cap_queue_connection
         caproverExtra:
-            containerHttpPort: '8000'
+            containerHttpPort: '8080'
         restart: always
+        depends_on:
+            - $$cap_appname-db
+            - $$cap_appname-cache
 
-    hi-events-db:
+    $$cap_appname-db:
         image: postgres:13-alpine
         environment:
             POSTGRES_DB: 'hi_events_db'
             POSTGRES_USER: 'hi_events_user'
-            POSTGRES_PASSWORD: 'hi_events_password'
+            POSTGRES_PASSWORD: '$$cap_DB_PASSWORD'
         volumes:
-            - hi-events-db-data:/var/lib/postgresql/data
+            - $$cap_appname-db-data:/var/lib/postgresql/data
         caproverExtra:
             containerHttpPort: '5432'
             notExposeAsWebApp: 'true'
         restart: always
 
-    hi-events-redis:
+    $$cap_appname-cache:
         image: redis:6-alpine
         environment: {}
         volumes:
-            - hi-events-redis-data:/data
+            - $$cap_appname-cache-data:/data
         caproverExtra:
             containerHttpPort: '6379'
             notExposeAsWebApp: 'true'
         restart: always
 
 volumes:
-    hi-events-db-data:
-    hi-events-redis-data:
+    $$cap_appname-db-data:
+    $$cap_appname-cache-data:
 
 caproverOneClickApp:
     variables:
         # Frontend Variables
         - id: $$cap_frontend_url
           label: VITE_FRONTEND_URL
-          defaultValue: 'https://your-app.com'
+          defaultValue: 'https://$$cap_appname.$$cap_root_domain'
           description: 'Frontend URL.'
           validRegex: /^https?:\/\/.*$/
         - id: $$cap_api_url_client
           label: VITE_API_URL_CLIENT
-          defaultValue: 'https://your-app.com/api'
+          defaultValue: 'https://$$cap_appname-backend.$$cap_root_domain/api'
           description: 'API URL for use in the browser.'
           validRegex: /^https?:\/\/.*$/
         - id: $$cap_api_url_server
           label: VITE_API_URL_SERVER
-          defaultValue: 'https://your-app.com/api'
+          defaultValue: 'https://$$cap_appname-backend.$$cap_root_domain/api'
           description: 'API URL for use on the server.'
           validRegex: /^https?:\/\/.*$/
         - id: $$cap_stripe_publishable_key
@@ -133,7 +138,7 @@ caproverOneClickApp:
           validRegex: /^.*$/
         - id: $$cap_mail_port
           label: MAIL_PORT
-          defaultValue: '2525'
+          defaultValue: '25'
           description: 'Mail server port.'
           validRegex: /^[0-9]+$/
         - id: $$cap_mail_username
@@ -155,6 +160,11 @@ caproverOneClickApp:
           label: MAIL_FROM_NAME
           defaultValue: 'Your App Name'
           description: 'Mail from name.'
+          validRegex: /^.*$/
+        - id: $$cap_mail_encryption
+          label: MAIL_ENCRYPTION
+          defaultValue: 'tls'
+          description: 'Mail Encryption'
           validRegex: /^.*$/
 
         # Backend Stripe Variables
@@ -192,7 +202,7 @@ caproverOneClickApp:
           validRegex: /^[0-9]+(\.[0-9]+)?$/
         - id: $$cap_app_frontend_url
           label: APP_FRONTEND_URL
-          defaultValue: 'https://your-app.com'
+          defaultValue: 'https://$$cap_appname.$$cap_root_domain'
           description: 'Frontend URL for backend configuration.'
           validRegex: /^https?:\/\/.*$/
         - id: $$cap_app_cdn_url
@@ -207,12 +217,12 @@ caproverOneClickApp:
           validRegex: /^(true|false)$/
         - id: $$cap_filesystem_public_disk
           label: FILESYSTEM_PUBLIC_DISK
-          defaultValue: 's3-public'
+          defaultValue: 'public'
           description: 'Public filesystem disk.'
           validRegex: /^.*$/
         - id: $$cap_filesystem_private_disk
           label: FILESYSTEM_PRIVATE_DISK
-          defaultValue: 's3-private'
+          defaultValue: 'local'
           description: 'Private filesystem disk.'
           validRegex: /^.*$/
         - id: $$cap_jwt_secret
@@ -224,6 +234,18 @@ caproverOneClickApp:
           label: LOG_CHANNEL
           defaultValue: 'stderr'
           description: 'Log channel.'
+          validRegex: /^.*$/
+        - id: $$cap_DB_PASSWORD
+          label: DB_PASSWORD (auto-generated)
+          defaultValue: '$$cap_gen_random_hex(16)'
+          description: 'Automatically generated PostgreSQL password.'
+          hidden: true
+          validRegex: /^.*$/
+        - id: $$cap_REDIS_PASSWORD
+          label: REDIS_PASSWORD (auto-generated)
+          defaultValue: '$$cap_gen_random_hex(16)'
+          description: 'Automatically generated Redis password.'
+          hidden: true
           validRegex: /^.*$/
 
         # AWS Configuration Variables
@@ -252,6 +274,11 @@ caproverOneClickApp:
           defaultValue: 'your-private-bucket'
           description: 'AWS private bucket name.'
           validRegex: /^.*$/
+        - id: $$cap_aws_public_url
+          label: AWS_PUBLIC_URL
+          defaultValue: 'https://your-public-bucket.s3.amazonaws.com'
+          description: 'AWS public'
+          validRegex: /^https?:\/\/.*$/
 
         # Queue Configuration Variable
         - id: $$cap_queue_connection
