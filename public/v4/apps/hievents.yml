@@ -51,19 +51,19 @@ services:
 
             # Database Configuration (Hardcoded)
             DB_CONNECTION: 'pgsql'
-            DB_HOST: 'srv-captain--hi-events-db'
+            DB_HOST: 'srv-captain--$$cap_appname-db'
             DB_PORT: '5432'
             DB_DATABASE: 'hi_events_db'
             DB_USERNAME: 'hi_events_user'
             DB_PASSWORD: '$$cap_DB_PASSWORD'
-            DATABASE_URL: 'postgres://hi_events_user:$$cap_DB_PASSWORD@srv-captain--hi-events-db:5432/hi_events_db'
+            DATABASE_URL: 'postgres://hi_events_user:$$cap_DB_PASSWORD@srv-captain--$$cap_appname-db:5432/hi_events_db'
 
             # Redis Configuration (Hardcoded)
             REDIS_HOST: 'srv-captain--hi-events-redis'
             REDIS_USER: 'default'
             REDIS_PASSWORD: '$$cap_REDIS_PASSWORD'
             REDIS_PORT: '6379'
-            REDIS_URL: 'redis://default:$$cap_REDIS_PASSWORD@srv-captain--hi-events-redis:6379'
+            REDIS_URL: 'redis://default:$$cap_REDIS_PASSWORD@srv-captain--$$cap_appname-cache:6379'
 
             # Queue Configuration
             QUEUE_CONNECTION: $$cap_queue_connection
@@ -88,18 +88,17 @@ services:
         restart: always
 
     $$cap_appname-cache:
-        image: redis:6-alpine
-        environment: {}
-        volumes:
-            - $$cap_appname-cache-data:/data
         caproverExtra:
-            containerHttpPort: '6379'
             notExposeAsWebApp: 'true'
-        restart: always
+            dockerfileLines:
+                - FROM redis:7-alpine
+                - CMD redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
+        volumes:
+            - $$cap_appname-cache:/data
 
 volumes:
     $$cap_appname-db-data:
-    $$cap_appname-cache-data:
+    $$cap_appname-cache:
 
 caproverOneClickApp:
     variables:
