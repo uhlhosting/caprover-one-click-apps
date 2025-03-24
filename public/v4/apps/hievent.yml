@@ -1,290 +1,116 @@
 captainVersion: 4
 services:
-    $$cap_appname:
-        image: daveearley/hi.events-all-in-one
+    # Frontend Service
+    $$cap_appname-frontend:
+        image: daveearley/hi.events-frontend:$$cap_app_version
+        restart: always
         environment:
-            # Frontend Configuration
-            VITE_FRONTEND_URL: https://$$cap_appname.$$cap_root_domain
-            VITE_API_URL_CLIENT: https://$$cap_appname.$$cap_root_domain/api
-            VITE_API_URL_SERVER: https://$$cap_appname.$$cap_root_domain/api
+            VITE_FRONTEND_URL: /
+            VITE_API_URL_CLIENT: /api
+            VITE_API_URL_SERVER: /api
             VITE_STRIPE_PUBLISHABLE_KEY: $$cap_stripe_publishable_key
+        depends_on:
+            - $$cap_appname-backend
+        caproverExtra:
+            containerHttpPort: 5678
 
-            # Backend Mail Configuration
-            MAIL_MAILER: $$cap_mail_mailer
-            MAIL_HOST: $$cap_mail_host
-            MAIL_PORT: $$cap_mail_port
-            MAIL_USERNAME: $$cap_mail_username
-            MAIL_PASSWORD: $$cap_mail_password
-            MAIL_FROM_ADDRESS: $$cap_mail_from_address
-            MAIL_FROM_NAME: $$cap_mail_from_name
-            MAIL_ENCRYPTION: $$cap_mail_encryption
-
-            # Backend Stripe Configuration
+    # Backend Service
+    $$cap_appname-backend:
+        image: daveearley/hi.events-backend:$$cap_app_version
+        restart: always
+        environment:
+            APP_KEY: $$cap_app_key
+            APP_FRONTEND_URL: http://$$cap_appname-frontend.$$cap_root_domain
+            DB_CONNECTION: pgsql
+            DB_HOST: srv-captain--$$cap_appname-db
+            DB_PORT: 5432
+            DB_DATABASE: hi_events
+            DB_USERNAME: hi_events
+            DB_PASSWORD: $$cap_db_password
+            REDIS_HOST: srv-captain--$$cap_appname-redis
+            REDIS_PORT: 6379
+            QUEUE_CONNECTION: redis
+            FILESYSTEM_PUBLIC_DISK: public
+            FILESYSTEM_PRIVATE_DISK: private
+            LOG_CHANNEL: stderr
+            JWT_SECRET: $$cap_jwt_secret
             STRIPE_PUBLIC_KEY: $$cap_stripe_public_key
             STRIPE_SECRET_KEY: $$cap_stripe_secret_key
             STRIPE_WEBHOOK_SECRET: $$cap_stripe_webhook_secret
-
-            # General Application Configuration
-            APP_KEY: $$cap_app_key
-            APP_SAAS_MODE_ENABLED: $$cap_app_saas_mode_enabled
-            APP_SAAS_STRIPE_APPLICATION_FEE_PERCENT: $$cap_app_saas_stripe_application_fee_percent
-            APP_FRONTEND_URL: https://$$cap_appname.$$cap_root_domain
-            APP_CDN_URL: $$cap_app_cdn_url
-            APP_DISABLE_REGISTRATION: $$cap_app_disable_registration
-            FILESYSTEM_PUBLIC_DISK: $$cap_filesystem_public_disk
-            FILESYSTEM_PRIVATE_DISK: $$cap_filesystem_private_disk
-            JWT_SECRET: $$cap_jwt_secret
-            LOG_CHANNEL: $$cap_log_channel
-
-            # AWS Configuration
-            AWS_ACCESS_KEY_ID: $$cap_aws_access_key_id
-            AWS_SECRET_ACCESS_KEY: $$cap_aws_secret_access_key
-            AWS_DEFAULT_REGION: $$cap_aws_default_region
-            AWS_PUBLIC_BUCKET: $$cap_aws_public_bucket
-            AWS_PRIVATE_BUCKET: $$cap_aws_private_bucket
-            AWS_S3_ENDPOINT: $$cap_aws_s3_endpoint
-
-            # Hardcoded Database Configuration
-            DB_CONNECTION: 'pgsql'
-            DB_HOST: 'srv-captain--$$cap_appname-db'
-            DB_PORT: '5432'
-            DB_DATABASE: 'hi_events_db'
-            DB_USERNAME: 'hi_events_user'
-            DB_PASSWORD: '$$cap_DB_PASSWORD'
-            DATABASE_URL: 'postgres://hi_events_user:$$cap_DB_PASSWORD@srv-captain--$$cap_appname-db:5432/hi_events_db'
-
-            # Hardcoded Redis Configuration
-            REDIS_HOST: 'srv-captain--$$cap_appname-cache'
-            REDIS_USER: 'default'
-            REDIS_PASSWORD: '$$cap_REDIS_PASSWORD'
-            REDIS_PORT: '6379'
-            REDIS_URL: 'redis://default:$$cap_REDIS_PASSWORD@srv-captain--$$cap_appname-cache:6379'
-
-            # Queue Configuration
-            QUEUE_CONNECTION: $$cap_queue_connection
+        depends_on:
+            - $$cap_appname-db
+            - $$cap_appname-redis
         caproverExtra:
-            containerHttpPort: '8080'
-        restart: always
+            notExposeAsWebApp: 'true'
 
+    # Database Service (PostgreSQL)
     $$cap_appname-db:
-        image: postgres:15-alpine
+        image: postgres:15
+        restart: always
         environment:
-            POSTGRES_DB: 'hi_events_db'
-            POSTGRES_USER: 'hi_events_user'
-            POSTGRES_PASSWORD: '$$cap_DB_PASSWORD'
+            POSTGRES_USER: hi_events
+            POSTGRES_PASSWORD: $$cap_db_password
+            POSTGRES_DB: hi_events
         volumes:
-            - $$cap_appname-db-data:/var/lib/postgresql/data
-        caproverExtra:
-            containerHttpPort: '5432'
-            notExposeAsWebApp: 'true'
-        restart: always
-
-    $$cap_appname-cache:
+            - $$cap_appname-db:/var/lib/postgresql/data
         caproverExtra:
             notExposeAsWebApp: 'true'
-            dockerfileLines:
-                - FROM redis:7-alpine
-                - CMD redis-server --appendonly yes --replica-read-only no --requirepass "$$cap_REDIS_PASSWORD"
-        volumes:
-            - $$cap_appname-cache:/data
-        restart: always
 
-volumes:
-    $$cap_appname-db-data:
-    $$cap_appname-cache:
+    # Redis Service
+    $$cap_appname-redis:
+        image: redis:7
+        restart: always
+        volumes:
+            - $$cap_appname-redis:/data
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 
 caproverOneClickApp:
     variables:
-        # Frontend Variables
-        - id: $$cap_frontend_url
-          label: VITE_FRONTEND_URL
-          defaultValue: 'https://$$cap_appname.$$cap_root_domain'
-          description: 'Frontend URL.'
-          validRegex: /^https?:\/\/.*$/
-        - id: $$cap_api_url_client
-          label: VITE_API_URL_CLIENT
-          defaultValue: 'https://$$cap_appname.$$cap_root_domain/api'
-          description: 'API URL for use in the browser.'
-          validRegex: /^https?:\/\/.*$/
-        - id: $$cap_api_url_server
-          label: VITE_API_URL_SERVER
-          defaultValue: 'https://$$cap_appname.$$cap_root_domain/api'
-          description: 'API URL for use on the server.'
-          validRegex: /^https?:\/\/.*$/
+        - id: $$cap_app_version
+          label: hi.events Version
+          defaultValue: latest
+          description: The version of hi.events to deploy (e.g., latest).
+
         - id: $$cap_stripe_publishable_key
-          label: VITE_STRIPE_PUBLISHABLE_KEY
-          defaultValue: 'pk_test_51...'
-          description: 'Stripe publishable key for the frontend.'
-          validRegex: /^pk_[a-zA-Z0-9_]+$/
+          label: Stripe Publishable Key
+          description: Your Stripe publishable key (e.g., pk_test_51...).
 
-        # Backend Mail Variables
-        - id: $$cap_mail_mailer
-          label: MAIL_MAILER
-          defaultValue: 'smtp'
-          description: 'Mail driver to be used.'
-          validRegex: /^smtp$/
-        - id: $$cap_mail_host
-          label: MAIL_HOST
-          defaultValue: 'smtp.mailtrap.io'
-          description: 'Mail server host.'
-          validRegex: /^.*$/
-        - id: $$cap_mail_port
-          label: MAIL_PORT
-          defaultValue: '25'
-          description: 'Mail server port.'
-          validRegex: /^[0-9]+$/
-        - id: $$cap_mail_username
-          label: MAIL_USERNAME
-          defaultValue: 'your-username'
-          description: 'Mail server username.'
-          validRegex: /^.*$/
-        - id: $$cap_mail_password
-          label: MAIL_PASSWORD
-          defaultValue: 'your-password'
-          description: 'Mail server password.'
-          validRegex: /^.*$/
-        - id: $$cap_mail_from_address
-          label: MAIL_FROM_ADDRESS
-          defaultValue: 'me@mywebsite.com'
-          description: 'Mail from address.'
-          validRegex: /^.*@.*$/
-        - id: $$cap_mail_from_name
-          label: MAIL_FROM_NAME
-          defaultValue: 'Your App Name'
-          description: 'Mail from name.'
-          validRegex: /^.*$/
-        - id: $$cap_mail_encryption
-          label: MAIL_ENCRYPTION
-          defaultValue: 'tls'
-          description: 'Mail Encryption.'
-          validRegex: /^.*$/
-
-        # Backend Stripe Variables
-        - id: $$cap_stripe_public_key
-          label: STRIPE_PUBLIC_KEY
-          defaultValue: 'pk_test_51...'
-          description: 'Stripe public key.'
-          validRegex: /^pk_[a-zA-Z0-9_]+$/
-        - id: $$cap_stripe_secret_key
-          label: STRIPE_SECRET_KEY
-          defaultValue: 'sk_test_51...'
-          description: 'Stripe secret key.'
-          validRegex: /^sk_[a-zA-Z0-9_]+$/
-        - id: $$cap_stripe_webhook_secret
-          label: STRIPE_WEBHOOK_SECRET
-          defaultValue: 'whsec_...'
-          description: 'Stripe webhook secret.'
-          validRegex: /^whsec_[a-zA-Z0-9_]+$/
-
-        # General Backend Configuration Variables
-        - id: $$cap_app_key
-          label: APP_KEY
-          defaultValue: 'base64:$$cap_gen_random_base64(32)'
-          description: 'Application key (base64 encoded, decodes to 32 bytes for AES-256-CBC).'
-          validRegex: /^base64:.*$/
-        - id: $$cap_app_saas_mode_enabled
-          label: APP_SAAS_MODE_ENABLED
-          defaultValue: 'true'
-          description: 'Enable SaaS mode.'
-          validRegex: /^(true|false)$/
-        - id: $$cap_app_saas_stripe_application_fee_percent
-          label: APP_SAAS_STRIPE_APPLICATION_FEE_PERCENT
-          defaultValue: '1.5'
-          description: 'Stripe application fee percentage.'
-          validRegex: /^[0-9]+(\.[0-9]+)?$/
-        - id: $$cap_app_frontend_url
-          label: APP_FRONTEND_URL
-          defaultValue: 'https://$$cap_appname.$$cap_root_domain'
-          description: 'Frontend URL for backend configuration.'
-          validRegex: /^https?:\/\/.*$/
-        - id: $$cap_app_cdn_url
-          label: APP_CDN_URL
-          defaultValue: 'https://cdn.your-app.com'
-          description: 'CDN URL.'
-          validRegex: /^https?:\/\/.*$/
-        - id: $$cap_app_disable_registration
-          label: APP_DISABLE_REGISTRATION
-          defaultValue: 'false'
-          description: 'Disable user registration.'
-          validRegex: /^(true|false)$/
-        - id: $$cap_filesystem_public_disk
-          label: FILESYSTEM_PUBLIC_DISK
-          defaultValue: 'public'
-          description: 'Public filesystem disk.'
-          validRegex: /^.*$/
-        - id: $$cap_filesystem_private_disk
-          label: FILESYSTEM_PRIVATE_DISK
-          defaultValue: 'local'
-          description: 'Private filesystem disk.'
-          validRegex: /^.*$/
         - id: $$cap_jwt_secret
-          label: JWT_SECRET
-          defaultValue: 'base64:$$cap_gen_random_base64(32)'
-          description: 'JWT secret key (base64 encoded, decodes to 32 bytes for AES-256-CBC).'
-          validRegex: /^base64:.*$/
-        - id: $$cap_log_channel
-          label: LOG_CHANNEL
-          defaultValue: 'stderr'
-          description: 'Log channel.'
-          validRegex: /^.*$/
+          label: JWT Secret
+          defaultValue: $$cap_gen_random_hex(256)
+          description: Application key (generate using `openssl rand -base64 256`.
 
-        # Auto-generated Credentials (Hidden)
-        - id: $$cap_DB_PASSWORD
-          label: DB_PASSWORD (auto-generated)
-          defaultValue: '$$cap_gen_random_hex(16)'
-          description: 'Automatically generated PostgreSQL password.'
-          hidden: true
-          validRegex: /^.*$/
-        - id: $$cap_REDIS_PASSWORD
-          label: REDIS_PASSWORD (auto-generated)
-          defaultValue: '$$cap_gen_random_hex(16)'
-          description: 'Automatically generated Redis password.'
-          hidden: true
-          validRegex: /^.*$/
+        - id: $$cap_stripe_public_key
+          label: Stripe Public Key
+          description: Your Stripe public key (e.g., pk_test_51...).
 
-        # AWS Configuration Variables
-        - id: $$cap_aws_access_key_id
-          label: AWS_ACCESS_KEY_ID
-          defaultValue: 'your-access-key-id'
-          description: 'AWS access key ID.'
-          validRegex: /^.*$/
-        - id: $$cap_aws_secret_access_key
-          label: AWS_SECRET_ACCESS_KEY
-          defaultValue: 'your-secret-access-key'
-          description: 'AWS secret access key.'
-          validRegex: /^.*$/
-        - id: $$cap_aws_default_region
-          label: AWS_DEFAULT_REGION
-          defaultValue: 'us-west-1'
-          description: 'AWS region.'
-          validRegex: /^.*$/
-        - id: $$cap_aws_public_bucket
-          label: AWS_PUBLIC_BUCKET
-          defaultValue: 'your-public-bucket'
-          description: 'AWS public bucket name.'
-          validRegex: /^.*$/
-        - id: $$cap_aws_private_bucket
-          label: AWS_PRIVATE_BUCKET
-          defaultValue: 'your-private-bucket'
-          description: 'AWS private bucket name.'
-          validRegex: /^.*$/
-        - id: $$cap_aws_public_url
-          label: AWS_PUBLIC_URL
-          defaultValue: 'https://your-public-bucket.s3.amazonaws.com'
-          description: 'AWS public URL for file storage.'
-          validRegex: /^https?:\/\/.*$/
+        - id: $$cap_stripe_secret_key
+          label: Stripe Secret Key
+          description: Your Stripe secret key (e.g., sk_test_51...).
 
-        # Queue Variable
-        - id: $$cap_queue_connection
-          label: QUEUE_CONNECTION
-          defaultValue: 'redis'
-          description: 'Queue connection type (redis for production deployments).'
-          validRegex: /^.*$/
+        - id: $$cap_stripe_webhook_secret
+          label: Stripe Webhook Secret
+          description: Your Stripe webhook secret (e.g., whsec_...).
+
+        - id: $$cap_app_key
+          label: App Key
+          defaultValue: $$cap_gen_random_hex(32)
+          description: Application key (generate using `openssl rand -base64 32`).
+
+        - id: $$cap_db_password
+          label: Database Password
+          defaultValue: $$cap_gen_random_hex(16)
+          description: Database password for PostgreSQL.
 
     instructions:
-        start: 'Deploying hi.events using the all‑in‑one image integrated with PostgreSQL and Redis.'
-        end: 'Deployment complete. Access your application via the provided URL.'
-    displayName: 'hi.events Production'
-    isOfficial: true
-    description: 'Deploy hi.events with production-grade services integrated with PostgreSQL and Redis using the all‑in‑one image.'
-    documentation: 'https://hi.events/docs/getting-started/deploying'
+        start: >-
+            hi.events is a modern event management platform. This one-click app will deploy the frontend and backend as separate services for better scalability.
+        end: >-
+            Done! 😄
+            Your hi.events service is available at [http://$$cap_appname-frontend.$$cap_root_domain](http://$$cap_appname-frontend.$$cap_root_domain).
+            Make sure to configure your Stripe webhook at [https://dashboard.stripe.com/webhooks](https://dashboard.stripe.com/webhooks) with the URL: [http://$$cap_appname-frontend.$$cap_root_domain/api/webhooks/stripe](http://$$cap_appname-frontend.$$cap_root_domain/api/webhooks/stripe).
+    displayName: 'hi.events (Separate Services)'
+    isOfficial: false
+    description: A modern event management platform. Deploy the frontend and backend as separate services for better scalability.
+    documentation: https://github.com/daveearley/hi.events

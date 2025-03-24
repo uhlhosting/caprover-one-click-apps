@@ -3,26 +3,39 @@ services:
     $$cap_appname:
         image: langflowai/langflow:$$cap_langflow_version
         volumes:
-            - $$cap_appname-data:/data/langflow
+            - $$cap_appname-data:/app/langflow
         restart: always
         environment:
             LANGFLOW_SUPERUSER: $$cap_langflow_superuser
             LANGFLOW_SUPERUSER_PASSWORD: $$cap_langflow_superuser_password
             LANGFLOW_SECRET_KEY: $$cap_langflow_secret_key
-            LANGFLOW_DATABASE_URL: $$cap_langflow_database_url
+            LANGFLOW_DATABASE_URL: postgresql://postgres:password@postgresdb:5432/langflow
             LANGFLOW_SAVE_DB_IN_CONFIG_DIR: true
             LANGFLOW_AUTO_LOGIN: $$cap_langflow_auto_login
             LANGFLOW_BACKEND_ONLY: $$cap_langflow_backend_only
             LANGFLOW_DEV: $$cap_langflow_dev
             LANGFLOW_OPEN_BROWSER: $$cap_langflow_open_browser
             LANGFLOW_HOST: 0.0.0.0
-            LANGFLOW_PORT: $$cap_langflow_port
+            LANGFLOW_PORT: 7860
             LANGFLOW_AUTO_SAVING: true
             LANGFLOW_AUTO_SAVING_INTERVAL: 1000
             LANGFLOW_CACHE_TYPE: async
             LANGFLOW_LOG_LEVEL: critical
         caproverExtra:
-            containerHttpPort: $$cap_langflow_port
+            containerHttpPort: 7860
+            websocketSupport: true
+    postgresdb:
+        image: postgres:15
+        volumes:
+            - $$cap_appname-postgres-data:/var/lib/postgresql/data
+        restart: always
+        environment:
+            POSTGRES_DB: langflow
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        caproverExtra:
+            containerHttpPort: 5432
+
 caproverOneClickApp:
     variables:
         - id: $$cap_langflow_version
@@ -54,9 +67,9 @@ caproverOneClickApp:
           label: PostgreSQL Database URL
           defaultValue: postgresql://postgres:password@srv-captain--postgresdb:5432/langflow
           description: >
-              The connection string for your PostgreSQL database. If you don’t have PostgreSQL installed, 
-              go to the CapRover One-Click App Store, search for PostgreSQL, and install it (tested with vesion 17.0-bookworm) 
-              During Caprover setup, change the database name from `postgres` to `langflow`. 
+              The connection string for your PostgreSQL database. If you don’t have PostgreSQL installed,
+              go to the CapRover One-Click App Store, search for PostgreSQL, and install it (tested with vesion 17.0-bookworm)
+              During Caprover setup, change the database name from `postgres` to `langflow`.
               Remember to use the username and password you specify during setup and update this field accordingly with the details.
           validRegex: /^postgresql:\/\/[^:]+:[^@]+@[^:]+:\d+\/[^\/]+$/
         - id: $$cap_langflow_auto_login
@@ -116,10 +129,10 @@ caproverOneClickApp:
           validRegex: /^\d*$/
     instructions:
         start: >
-            LangFlow is a UI for creating workflows with LLMs. This One-Click App requires a superuser 
-            username and password for login, ensuring security. The secret key is auto-generated for securing 
-            sensitive data. Ensure you have PostgreSQL installed and configured. If not, you can install PostgreSQL 
-            using the CapRover One-Click App Store and configure it by setting the database name to `langflow` and 
+            LangFlow is a UI for creating workflows with LLMs. This One-Click App requires a superuser
+            username and password for login, ensuring security. The secret key is auto-generated for securing
+            sensitive data. Ensure you have PostgreSQL installed and configured. If not, you can install PostgreSQL
+            using the CapRover One-Click App Store and configure it by setting the database name to `langflow` and
             using your own username and password.
 
             Remember to update the PostgreSQL connection string to match your setup.
